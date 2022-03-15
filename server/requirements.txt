@@ -1,0 +1,13 @@
+Flask==2.0.3
+Flask-Cors==3.0.10
+ariadne==0.14.1
+click==8.0.4
+graphql-core==3.1.7
+itsdangerous==2.0.1
+Jinja2==3.0.3
+MarkupSafe==2.0.1
+six==1.15.0
+starlette==0.13.4
+typing-extensions==3.7.4.2
+Werkzeug==2.0.3
+pymongo==2.3.0
