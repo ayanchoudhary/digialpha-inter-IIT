@@ -16,6 +16,9 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
+    babelOptions: {
+      presets: ['@babel/preset-react'],
+    },
   },
   parser: '@babel/eslint-parser',
   rules: {
