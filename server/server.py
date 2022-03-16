@@ -2,11 +2,11 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from ariadne import graphql_sync, make_executable_schema, gql, load_schema_from_path
 from ariadne.constants import PLAYGROUND_HTML
-from models import query, mutation
+from models import query
 import os
 
 type_defs = gql(load_schema_from_path("./schema.graphql"))
-schema = make_executable_schema(type_defs, query, mutation)
+schema = make_executable_schema(type_defs, query)
 
 static_dir = os.path.join('client', 'build')
 
