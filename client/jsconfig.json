@@ -2,7 +2,11 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@constants/*": ["./src/constants/*"],
+      "@edgeServer/*": ["src/edgeServer/*"],
+      "@layouts/*": ["./src/layouts/*"],
+      "@services/*": ["./src/services/*"]
     }
   },
   "exclude": ["node_modules", "build"]
