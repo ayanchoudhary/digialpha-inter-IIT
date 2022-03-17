@@ -1,9 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useGetCompanyInfoByName } from '@edgeServer/getCompanyInfo';
 
 const CompanyDashboard = () => {
   const { companyName } = useParams();
-  console.log(companyName);
+  const { data, error } = useGetCompanyInfoByName(companyName);
+  console.log(data, error);
   return <div>CompanyDashboard</div>;
 };
 
