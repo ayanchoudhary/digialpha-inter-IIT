@@ -27,6 +27,13 @@ type UnitEcon {
   ltvRatio: Float
 }
 
+type SaaSGoals {
+  growth: Boolean
+  profitability: Boolean
+  maturity: Boolean
+  retention: Boolean
+}
+
 enum Quarter {
   Q1
   Q2
@@ -50,6 +57,7 @@ type Company {
   engagement: [Engagement]
   revenue: [Revenue]
   unitEcon: [UnitEcon]
+  saasGoals: [SaaSGoals]
 }
 
 type Query {
