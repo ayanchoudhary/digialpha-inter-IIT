@@ -1,3 +1,4 @@
+from typing import Optional
 from ariadne import QueryType, MutationType
 from mongo import db
 from uuid import uuid4
@@ -5,14 +6,6 @@ import enum
 from bson.objectid import ObjectId
 
 query = QueryType()
-
-# Sample query
-@query.field("hello")
-def resolve_hello(_, info):
-    return "Hi there"
-
-# Sample Class
-orders = []
 
 class Acquistion:
     def __init__(self, leads, accounts, conversion, salesCycle, cac):
@@ -22,11 +15,17 @@ class Acquistion:
         self.salesCycle = salesCycle
         self.cac = cac
 
+    def zeroAcquisition():
+        return Acquistion(0,0,0,0,0)
+
 class Engagement:
     def __init__(self, users, penetration, nps):
         self.users = users
         self.penetration = penetration
         self.nps = nps
+
+    def zeroEngagement():
+        return Engagement(0,0,0)
 
 class Revenue:
     def __init__(self, rr, growth, arpa, acv, churnRate, accountDist):
@@ -37,13 +36,19 @@ class Revenue:
         self.churnRate = churnRate
         self.accountDist = accountDist
 
+    def zeroRevenue():
+        return Revenue(0,0,0,0,0,0)
+
 class UnitEcon:
     def __init__(self, ltv, payback, ltvRatio):
         self.ltv = ltv
         self.payback = payback
         self.ltvRatio = ltvRatio
+    
+    def zeroUnitEcon():
+        return UnitEcon(0,0,0)
 
-class Quater:
+class Quarter:
     def __init__(self, q1, q2, q3, q4):
         self.q1 = q1
         self.q2 = q2
@@ -56,38 +61,115 @@ class Date:
         self.year = year
 
 class Company:
-    def __init__(self, name, id, cik, sic, Date, acquisition, engagement, revenue, unitEcon ):
+    def __init__(self, name, id, cik, sic, symbol, date, acquisition, engagement, revenue, unitEcon ):
         self.name = name
         self.id = id
         self.cik = cik
         self.sic = sic
-        self.filingStart = Date
+        self.symbol = symbol
+        self.filingStart = date
         self.acquisition = acquisition
         self.engagement = engagement
         self.revenue = revenue
         self.unitEcon = unitEcon
 
-@query.field("company")
-def resolve_company(_, info):
-    company_id = "62325f87fa667835d4ecfafb"
-    company = db.companies.find_one({"_id": ObjectId("62325f87fa667835d4ecfafb")})
-    filling_date = db.dates.find_one({"_id": ObjectId(company["filingStart"])})
-    filling_date_obj = Date(quarter=filling_date["quarter"], year=filling_date["year"])
-    acquisition = db.acquisitions.find_one({"company_id": (company_id)})
-    acquisition_obj = Acquistion(leads=acquisition["leads"], accounts=acquisition["accounts"], conversion=acquisition["conversion"], salesCycle=acquisition["salesCycle"], cac=acquisition["cac"])
-    engagement = db.engagements.find_one({"company_id": company_id})
-    engagement_obj = Engagement(users=engagement["users"], penetration=engagement["penetration"], nps=engagement["nps"])
-    revenue = db.revenues.find_one({"company_id": company_id})
-    revenue_obj = Revenue(rr=revenue["rr"], growth=revenue["growth"], arpa=revenue["arpa"], acv=revenue["acv"], churnRate=revenue["churnRate"], accountDist=revenue["accountDist"])
-    unitEcon = db.unit_econs.find_one({"company_id": company_id})
-    unitEcon_obj = UnitEcon(ltv=unitEcon["ltv"], payback=unitEcon["payback"], ltvRatio=unitEcon["ltvRatio"])
-    company_obj = Company(name=company["name"], id=str(company["_id"]), cik=company["cik"], sic=company["sic"], Date=filling_date_obj, acquisition=acquisition_obj, engagement=engagement_obj, revenue=revenue_obj, unitEcon=unitEcon_obj)
-    
-    return company_obj
 
-# @mutation.field("orderCoffee")
-# def resolve_hello(_, info, size, name, type):
-#     newOrder = Coffee(size, name, type)
-#     db.coffee.insert_one(newOrder)
-#     orders.append(newOrder)
-#     return newOrder
+def get_filing_dates(start_date, end_date=None):
+    # Sort all filing dates in order
+    all_filings = list(db.dates.find())
+    all_filings.sort(key = lambda x: (x['year'], x['quarter']))
+
+    # Get index of date from which filings need to be fetched
+    start_date_obj = db.dates.find_one({"quarter": start_date.quarter, "year": start_date.year})
+    start_index = [str(i["_id"]) for i in all_filings].index(str(start_date_obj["_id"]))
+
+    if not end_date:
+        return all_filings[start_index:]
+
+    # Get index of date till which filings need to be fetched
+    end_date_obj = db.dates.find_one({"quarter": end_date.quarter, "year": end_date.year})
+    end_index = [str(i["_id"]) for i in all_filings].index(str(end_date_obj["_id"]))
+
+    return all_filings[start_index:end_index]
+
+
+def get_company_details(company_id, filing_date):
+    # initialize zero states to return in case database entry does not exist
+    acquisition_obj = Acquistion.zeroAcquisition()
+    engagement_obj = Engagement.zeroEngagement()
+    revenue_obj = Revenue.zeroRevenue()
+    unitEcon_obj = UnitEcon.zeroUnitEcon()
+
+    acquisition = db.acquisitions.find_one({"company_id": (company_id), "filing_date": (filing_date)})
+    if acquisition:
+        acquisition_obj = Acquistion(
+            leads=acquisition["leads"],
+            accounts=acquisition["accounts"],
+            conversion=acquisition["conversion"],
+            salesCycle=acquisition["salesCycle"],
+            cac=acquisition["cac"]
+        )
+
+    engagement = db.engagements.find_one({"company_id": company_id, "filing_date": (filing_date)})
+    if engagement:
+        engagement_obj = Engagement(
+            users=engagement["users"],
+            penetration=engagement["penetration"],
+            nps=engagement["nps"]
+        )
+
+    revenue = db.revenues.find_one({"company_id": company_id, "filing_date": (filing_date)})
+    if revenue:
+        revenue_obj = Revenue(
+            rr=revenue["rr"],
+            growth=revenue["growth"],
+            arpa=revenue["arpa"],
+            acv=revenue["acv"],
+            churnRate=revenue["churnRate"],
+            accountDist=revenue["accountDist"]
+        )
+
+    unitEcon = db.unit_econs.find_one({"company_id": company_id, "filing_date": (filing_date)})
+    if unitEcon:
+        unitEcon_obj = UnitEcon(
+            ltv=unitEcon["ltv"],
+            payback=unitEcon["payback"],
+            ltvRatio=unitEcon["ltvRatio"]
+        )
+
+    return acquisition_obj, engagement_obj, revenue_obj, unitEcon_obj
+    
+
+@query.field("company")
+def resolve_company(_, info, name):
+    # Fetch company by name and return its unique id
+    company = db.companies.find_one({"name": (name)})
+    company_id = str(company["_id"])
+
+    # Get the first instance of filing available and then get the filing details for all quarters after this
+    filing_date = db.dates.find_one({"_id": ObjectId(company["filingStart"])})
+    filing_date_obj = Date(quarter=filing_date["quarter"], year=filing_date["year"])
+
+    filings_dates = get_filing_dates(filing_date_obj)
+
+    acqusitions, engagements, revenues, unitEcons = [], [], [], []
+    for date in filings_dates:
+        acquisition_obj, engagement_obj, revenue_obj, unitEcon_obj = get_company_details(company_id, str(date["_id"]))
+        acqusitions.append(acquisition_obj)
+        engagements.append(engagement_obj)
+        revenues.append(revenue_obj)
+        unitEcons.append(unitEcon_obj)
+
+    company_obj = Company(
+        name=company["name"],
+        id=str(company["_id"]),
+        cik=company["cik"],
+        sic=company["sic"],
+        symbol=company["symbol"],
+        date=filing_date_obj,
+        acquisition=acqusitions,
+        engagement=engagements,
+        revenue=revenues,
+        unitEcon=unitEcons
+    )
+    return company_obj
