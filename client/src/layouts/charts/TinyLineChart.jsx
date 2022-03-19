@@ -47,8 +47,8 @@ const data = [
   },
 ];
 
-const TinyLineChart = ({ stroke }) => (
-  <ResponsiveContainer width={120} height="100%">
+const TinyLineChart = ({ stroke, fullWidth }) => (
+  <ResponsiveContainer width={fullWidth ? '100%' : 120} height="100%">
     <LineChart width={120} height={120} data={data}>
       <Tooltip />
       <Line type="monotone" dataKey="pv" stroke={stroke} strokeWidth={2} dot={false} />
