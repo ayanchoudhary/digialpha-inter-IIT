@@ -1,12 +1,24 @@
 from ariadne import QueryType
-from mongo import db
-from uuid import uuid4
 from bson.objectid import ObjectId
 from models import Date, Company
+from mongo import db
 from utils import *
 
 query = QueryType()
 
+"""Returns company details for a given company and date range
+
+Args:
+    name (str): name of company to fetch data for
+    cik (str): cik of company to fetch data for
+    sic (str): sic of company to fetch data for
+    symbol (str): symbol of company to fetch data for
+    startDate (str): the starting date to fetch data points from
+    endDate (str): the ending date to fetch data points till
+
+Returns:
+    Company: a company object containing metadata and set of required datapoints
+"""
 @query.field("company")
 def resolve_company(_, info, name=None, cik=None, sic=None, symbol=None, startDate=None, endDate=None):
     # Fetch company and return its unique id
@@ -39,6 +51,7 @@ def resolve_company(_, info, name=None, cik=None, sic=None, symbol=None, startDa
         filings_dates = get_filing_dates(start_date_obj)
 
     acqusitions, engagements, revenues, unitEcons, saasGoals = [], [], [], [], []
+    # fetch required data points for all required dates
     for date in filings_dates:
         acquisition_obj, engagement_obj, revenue_obj, unitEcon_obj, saasGoals_obj = get_company_details(company_id, str(date["_id"]))
         acqusitions.append(acquisition_obj)
@@ -47,6 +60,7 @@ def resolve_company(_, info, name=None, cik=None, sic=None, symbol=None, startDa
         unitEcons.append(unitEcon_obj)
         saasGoals.append(saasGoals_obj)
 
+    # return the required company object
     company_obj = Company(
         name=company["name"],
         id=str(company["_id"]),
@@ -61,4 +75,3 @@ def resolve_company(_, info, name=None, cik=None, sic=None, symbol=None, startDa
         saasGoals=saasGoals
     )
     return company_obj
-    

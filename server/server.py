@@ -8,7 +8,7 @@ import csv
 import os
 import io
 
-
+# Load graphql schema and make executable for graphql query
 type_defs = gql(load_schema_from_path("./schema.graphql"))
 schema = make_executable_schema(type_defs, query)
 
@@ -21,21 +21,25 @@ app = Flask(__name__,
 
 cors = CORS(app, resources={r"/graphql": {"origins": "*"}})
 
+# Route to handle / on the server
 @app.route('/')
 def root():
-    return send_from_directory(static_dir, "index.html")
+    """Return welcome message"""
+    return "Welcome to server", 200
 
 
+# Route to provide GRAPHQL Playground
 @app.route("/graphql", methods=["GET"])
 def graphql_playgroud():
     """Serve GraphiQL playground"""
     return PLAYGROUND_HTML, 200
 
 
+# Route to make graphql queries
 @app.route("/graphql", methods=["POST"])
 def graphql_server():
+    """Parse query and return graphql result"""
     data = request.get_json()
-
     success, result = graphql_sync(
         schema,
         data,
@@ -45,6 +49,8 @@ def graphql_server():
     status_code = 200 if success else 400
     return jsonify(result), status_code
 
+
+# Route to create a downloadable csv
 @app.route("/download/company-parameters", methods=["GET"])
 def download_company_paramas():
     """Download company params"""
@@ -78,14 +84,16 @@ def download_company_paramas():
         'LTV/CAC Ratio'
     ]
     company_data = get_company_csv_data(company_id)
+    # Write data rows to csv
     cw.writerow(csv_header)
     for row in company_data:
         cw.writerow(row)
 
+    # Set output response and headers to provide csv download
     output = make_response(si.getvalue())
     output.headers["Content-Disposition"] = "attachment; filename=company_data.csv"
     output.headers["Content-type"] = "text/csv"
     return output
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
