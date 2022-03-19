@@ -1,38 +1,3 @@
-type Acquisition {
-  leads: Int
-  accounts: Int
-  conversion: Float
-  salesCycle: Int
-  cac: Float
-}
-
-type Engagement {
-  users: Int
-  penetration: Float
-  nps: String
-}
-
-type Revenue {
-  rr: Int
-  growth: Float
-  arpa: Float
-  acv: Int
-  churnRate: Float
-  accountDist: Int
-}
-
-type UnitEcon {
-  ltv: Int
-  payback: Int
-  ltvRatio: Float
-}
-
-type SaaSGoals {
-  growth: Boolean
-  profitability: Boolean
-  maturity: Boolean
-  retention: Boolean
-}
 
 enum Quarter {
   Q1
@@ -44,6 +9,47 @@ enum Quarter {
 type Date {
   quarter: Quarter!
   year: Int!
+}
+
+type Acquisition {
+  leads: Int
+  accounts: Int
+  conversion: Float
+  salesCycle: Int
+  cac: Float
+  filingDate: Date
+}
+
+type Engagement {
+  users: Int
+  penetration: Float
+  nps: String
+  filingDate: Date
+}
+
+type Revenue {
+  rr: Int
+  growth: Float
+  arpa: Float
+  acv: Int
+  churnRate: Float
+  accountDist: Int
+  filingDate: Date
+}
+
+type UnitEcon {
+  ltv: Int
+  payback: Int
+  ltvRatio: Float
+  filingDate: Date
+}
+
+type SaaSGoals {
+  growth: Boolean
+  profitability: Boolean
+  maturity: Boolean
+  retention: Boolean
+  filingDate: Date
 }
 
 type Company {

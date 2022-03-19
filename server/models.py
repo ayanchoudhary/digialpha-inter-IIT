@@ -7,52 +7,57 @@ from bson.objectid import ObjectId
 query = QueryType()
 
 class Acquistion:
-    def __init__(self, leads, accounts, conversion, salesCycle, cac):
+    def __init__(self, leads, accounts, conversion, salesCycle, cac, date=None):
         self.leads = leads
         self.accounts = accounts
         self.conversion = conversion
         self.salesCycle = salesCycle
         self.cac = cac
+        self.filingDate = date
 
     def zeroAcquisition():
         return Acquistion(0,0,0,0,0)
 
 class Engagement:
-    def __init__(self, users, penetration, nps):
+    def __init__(self, users, penetration, nps, date=None):
         self.users = users
         self.penetration = penetration
         self.nps = nps
+        self.filingDate = date
 
     def zeroEngagement():
         return Engagement(0,0,0)
 
 class Revenue:
-    def __init__(self, rr, growth, arpa, acv, churnRate, accountDist):
+    def __init__(self, rr, growth, arpa, acv, churnRate, accountDist, date=None):
         self.rr = rr
         self.growth = growth
         self.arpa = arpa
         self.acv = acv
         self.churnRate = churnRate
         self.accountDist = accountDist
+        self.filingDate = date
 
     def zeroRevenue():
         return Revenue(0,0,0,0,0,0)
 
 class UnitEcon:
-    def __init__(self, ltv, payback, ltvRatio):
+    def __init__(self, ltv, payback, ltvRatio, date=None):
         self.ltv = ltv
         self.payback = payback
         self.ltvRatio = ltvRatio
+        self.filingDate = date
     
     def zeroUnitEcon():
         return UnitEcon(0,0,0)
 
 class SaaSGoals:
-    def __init__(self, growth, profitability, maturity, retention):
+    def __init__(self, growth, profitability, maturity, retention, date=None):
         self.growth = growth
         self.profitability = profitability
         self.maturity = maturity
         self.retention = retention
+        self.filingDate = date
 
     def negativeSaasGoals():
         return SaaSGoals(False, False, False, False)
@@ -67,7 +72,7 @@ class Quarter:
 class Date:
     def __init__(self, quarter, year):
         self.quarter = quarter
-        self.year = year
+        self.year = int(year)
 
 class Company:
     def __init__(self, name, id, cik, sic, symbol, date, acquisition, engagement, revenue, unitEcon, saasGoals):
@@ -114,13 +119,17 @@ def get_company_details(company_id, filing_date):
     saasGoals_obj = SaaSGoals.negativeSaasGoals()
 
     acquisition = db.acquisitions.find_one({"company_id": (company_id), "filingDate": (filing_date)})
+    filing_date_db_obj = db.dates.find_one({"_id": ObjectId(filing_date)})
+    current_filing_date_obj = Date(quarter=filing_date_db_obj["quarter"], year=(filing_date_db_obj["year"]))
+    
     if acquisition:
         acquisition_obj = Acquistion(
             leads=acquisition["leads"],
             accounts=acquisition["accounts"],
             conversion=acquisition["conversion"],
             salesCycle=acquisition["salesCycle"],
-            cac=acquisition["cac"]
+            cac=acquisition["cac"],
+            date=current_filing_date_obj
         )
 
     engagement = db.engagements.find_one({"company_id": company_id, "filingDate": (filing_date)})
@@ -128,7 +137,8 @@ def get_company_details(company_id, filing_date):
         engagement_obj = Engagement(
             users=engagement["users"],
             penetration=engagement["penetration"],
-            nps=engagement["nps"]
+            nps=engagement["nps"],
+            date=current_filing_date_obj
         )
 
     revenue = db.revenues.find_one({"company_id": company_id, "filingDate": (filing_date)})
@@ -139,7 +149,8 @@ def get_company_details(company_id, filing_date):
             arpa=revenue["arpa"],
             acv=revenue["acv"],
             churnRate=revenue["churnRate"],
-            accountDist=revenue["accountDist"]
+            accountDist=revenue["accountDist"],
+            date=current_filing_date_obj
         )
 
     unitEcon = db.unit_econs.find_one({"company_id": company_id, "filingDate": (filing_date)})
@@ -147,7 +158,8 @@ def get_company_details(company_id, filing_date):
         unitEcon_obj = UnitEcon(
             ltv=unitEcon["ltv"],
             payback=unitEcon["payback"],
-            ltvRatio=unitEcon["ltvRatio"]
+            ltvRatio=unitEcon["ltvRatio"],
+            date=current_filing_date_obj
         )
 
     # saasGoals_obj = computeSaasGoals()
@@ -165,6 +177,8 @@ def resolve_company(_, info, name=None, cik=None, sic=None, symbol=None, startDa
         company = db.companies.find_one({"sic": (sic)})
     elif symbol:
         company = db.companies.find_one({"symbol": (symbol)})
+    else:
+        company = db.companies.find_one({})
     company_id = str(company["_id"])
 
     # Get the first instance of filing available and then get the filing details for all quarters after this
