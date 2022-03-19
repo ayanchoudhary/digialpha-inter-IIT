@@ -31,7 +31,7 @@ const data = [
 const LineComparison = () => (
   <div>
     <LineChart
-      width={500}
+      width={300}
       height={300}
       data={data}
       margin={{
@@ -42,13 +42,12 @@ const LineComparison = () => (
       }}
     >
       <Legend />
-
-      {/* <CartesianGrid strokeDasharray="3 3" /> */}
-      <XAxis dataKey="name" />
-      <YAxis />
+      <CartesianGrid strokeDasharray="3" vertical={false} />
+      <XAxis dataKey="name" axisLine={false} />
+      <YAxis axisLine={false} />
       <Tooltip />
-      <Line type="monotone" dataKey="Churnned MRR" stroke="#00AB55" strokeWidth={2} />
-      <Line type="monotone" dataKey="New MRR" stroke="#FF6C40" strokeWidth={2} />
+      <Line type="monotone" dataKey="Churnned MRR" stroke="#00AB55" strokeWidth={2} dot={false} />
+      <Line type="monotone" dataKey="New MRR" stroke="#FF6C40" strokeWidth={2} dot={false} />
     </LineChart>
   </div>
 );

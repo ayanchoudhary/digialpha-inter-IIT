@@ -47,13 +47,20 @@ const RightBarCard = () => (
         <EmptyPieChart data={data} innerRadius={60} outerRadius={80} />
       </div>
     </div>
-    <div className="line1">
-      <div className="">MRR Stats</div>
-      {/* <LineComparison /> */}
+
+    <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
+      <p className="font-bold text-sm">MRR Stats</p>
+      <p className="text-xs text-gray-500">(+43% New | -12% Churnned) than last year</p>
+      <div className="rightColCard flex flex-col items-center mt-4">
+        <LineComparison />
+      </div>
     </div>
-    <div className="pie2">
-      LTV/CAC Comparison
-      {/* <PieComparison fullWidth /> */}
+
+    <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
+      <p className="font-bold text-sm"> LTV/CAC Comparison</p>
+      <div className="rightColCard flex flex-col items-center">
+        <PieComparison />
+      </div>
     </div>
   </div>
 );

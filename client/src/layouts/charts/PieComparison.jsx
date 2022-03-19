@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 
 const ltv = [
   { name: 'LTV', value: 75 },
@@ -15,7 +15,7 @@ const cac = [
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#826AF9', '#00AB55'];
 
 const PieComparison = ({ fullWidth }) => (
-  <ResponsiveContainer width={fullWidth ? '100%' : 120} height={200}>
+  <ResponsiveContainer width={fullWidth ? '100%' : 200} height={300}>
     <PieChart width={200} height={200}>
       <Pie data={ltv} dataKey="value" cx="50%" cy="50%" innerRadius={55} outerRadius={70}>
         {ltv.map((entry, index) => {
@@ -33,7 +33,8 @@ const PieComparison = ({ fullWidth }) => (
           return <Cell key={`cell-${index}`} fill="#007B55" />;
         })}
       </Pie>
-      <Tooltip/>
+      <Legend />
+      <Tooltip />
     </PieChart>
   </ResponsiveContainer>
 );
