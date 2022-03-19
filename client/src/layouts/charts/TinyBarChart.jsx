@@ -47,9 +47,9 @@ const data = [
   },
 ];
 
-const TinyBarChart = ({ fill }) => (
+const TinyBarChart = ({ fill, graphData }) => (
   <ResponsiveContainer width={100} height="80%">
-    <BarChart width={120} height={120} data={data}>
+    <BarChart width={120} height={120} data={graphData === [] ? graphData : data}>
       <Tooltip />
       <Bar dataKey="pv" fill={fill} barSize={5} radius={100} />
     </BarChart>

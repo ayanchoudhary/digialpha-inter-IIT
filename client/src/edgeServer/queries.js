@@ -31,19 +31,19 @@ export const GET_COMPANY_ALL_DETAILS_BY_NAME = gql`
         conversion
         salesCycle
         cac
-        # filingDate {
-        #   quarter
-        #   year
-        # }
+        filingDate {
+          quarter
+          year
+        }
       }
       engagement {
         users
         penetration
         nps
-        # filingDate {
-        #   quarter
-        #   year
-        # }
+        filingDate {
+          quarter
+          year
+        }
       }
       revenue {
         rr
@@ -52,29 +52,29 @@ export const GET_COMPANY_ALL_DETAILS_BY_NAME = gql`
         acv
         churnRate
         accountDist
-        # filingDate {
-        #   quarter
-        #   year
-        # }
+        filingDate {
+          quarter
+          year
+        }
       }
       unitEcon {
         ltv
         payback
         ltvRatio
-        # filingDate {
-        #   quarter
-        #   year
-        # }
+        filingDate {
+          quarter
+          year
+        }
       }
       saasGoals {
         growth
         profitability
         maturity
         retention
-        # filingDate {
-        #   quarter
-        #   year
-        # }
+        filingDate {
+          quarter
+          year
+        }
       }
     }
   }
