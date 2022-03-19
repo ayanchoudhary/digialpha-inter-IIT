@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import MinStatCard from '@layouts/companyDashboard/MinStatCard';
-import MinStatCard2 from '@layouts/companyDashboard/MinStatCard2';
+import SideBarCard from '@layouts/companyDashboard/SideBarCard';
 import '@layouts/companyDashboard/index.scss';
 import ChartWrapper from '@layouts/charts/ChartWrapper';
 import { CHART_TYPES } from '@constants/variations';
@@ -27,7 +27,7 @@ const DUMMY_MINISTAT_DATA2 = [
     delta: '2.6',
     graphType: 'line',
     graphData: [],
-    bgcolor: '#00FF85',
+    bgcolor: '#C8FACD',
     color: '#005249',
   },
   {
@@ -36,8 +36,8 @@ const DUMMY_MINISTAT_DATA2 = [
     delta: '-0.6',
     graphType: 'line',
     graphData: [],
-    bgcolor: '#C8FACD',
-    color: '#005249',
+    bgcolor: '#FFF7CD',
+    color: '#7A4F01',
   },
   {
     label: 'Average Revenue',
@@ -45,14 +45,11 @@ const DUMMY_MINISTAT_DATA2 = [
     delta: '2.6',
     graphType: 'line',
     graphData: [],
-    bgcolor: '#FFF7CD',
-    color: '#7A4F01',
+    bgcolor: '#C8FACD',
+    color: '#005249',
   },
-  // Add distribution of accounts pie chart
   {
     label: 'Distribution of accounts',
-    // value: '18,765',
-    // delta: '-2.6',
     graphType: 'pie',
     graphData: [
       { name: 'Group A', value: 400 },
@@ -61,7 +58,6 @@ const DUMMY_MINISTAT_DATA2 = [
       { name: 'Group D', value: 200 },
     ],
   },
-  // { label: 'CAC Payback', value: '18,765', delta: '2.6', graphType: 'line', graphData: [] },
 ];
 
 const CompanyDashboard = () => {
@@ -76,22 +72,22 @@ const CompanyDashboard = () => {
           <MinStatCard {...stat} key={stat.label} />
         ))}
       </div>
-      <div className="Row2 flex flex-row justify-evenly hide-scrollbar flex-nowrap">
-        <div className="Col1">
+      <div className="flex flex-row justify-evenly flex-nowrap">
+        <div className="Col1 flex-shrink-0">
           {DUMMY_MINISTAT_DATA2.map((stat) => (
-            <MinStatCard2 {...stat} key={stat.label} />
+            <SideBarCard {...stat} key={stat.label} />
           ))}
         </div>
-        <div className="Col2">
+        <div className="Col2 flex-shrink-0">
           <div className="flex flex-col gap-8">
             <ChartWrapper chartLabel="Active Users Stats" type={CHART_TYPES.LINE} />
             <ChartWrapper chartLabel="Quarterly Recurring Revenue" type={CHART_TYPES.BAR_HZ} />
             <ChartWrapper chartLabel="ARR Growth Rate" type={CHART_TYPES.BAR} />
           </div>
         </div>
-        <div className="Col3">
+        <div className="Col3 flex-shrink-0">
           {DUMMY_MINISTAT_DATA2.map((stat) => (
-            <MinStatCard2 {...stat} key={stat.label} />
+            <SideBarCard {...stat} key={stat.label} />
           ))}
         </div>
       </div>
