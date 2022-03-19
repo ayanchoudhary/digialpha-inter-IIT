@@ -8,6 +8,6 @@ Jinja2==3.0.3
 MarkupSafe==2.0.1
 six==1.15.0
 starlette==0.13.4
-typing-extensions==3.7.4.2
+typing-extensions
 Werkzeug==2.0.3
-pymongo==2.3.0
+pymongo
