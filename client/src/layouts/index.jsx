@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import Navbar from './Navbar';
+// import Navbar from './Navbar';
 import CompanyDashboard from './companyDashboard';
 
 const Dashboard = () => {
@@ -9,10 +9,10 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard flex flex-col">
-      <div>
+      {/* <div>
         <Navbar />
-      </div>
-      <div>
+      </div> */}
+      <div className="mt-8">
         <CompanyDashboard />
       </div>
     </div>
