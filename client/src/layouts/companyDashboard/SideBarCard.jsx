@@ -29,9 +29,9 @@ const SideBarCard = ({ label, value, delta, graphType, graphData, bgcolor, color
       </div>
       <div style={{ height: 200 }}>
         {graphType === 'line' ? (
-          <TinyLineChart stroke={color} fullWidth />
+          <TinyLineChart stroke={color} fullWidth graphData={graphData} />
         ) : (
-          <TinyPieChart fullWidth />
+          <TinyPieChart fullWidth graphData={graphData} />
         )}
       </div>
     </div>
