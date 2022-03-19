@@ -23,7 +23,7 @@ module.exports = {
   parser: '@babel/eslint-parser',
   rules: {
     'no-unused-vars': ['warn', { args: 'none', argsIgnorePattern: 'req|res|next|val' }],
-    'prettier/prettier': ['error'],
+    'prettier/prettier': ['warn'],
   },
   settings: {
     react: {
