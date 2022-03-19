@@ -17,45 +17,45 @@ const nps = [
   { name: 'Left', value: 2 },
 ];
 
-const data1 = [
-  { name: 'NPS', value: 8 },
-  { name: 'Left', value: 2 },
-];
-
-const RightBarCard = ({ label, value, delta, graphType, graphData, bgcolor, color }) => {
-  const isDeltaPositive = delta > 0;
-
-  return (
-    <div className="flex flex-col">
-      <div
-        className="nps flex flex-row items-center rounded-3xl flex-shrink-0 h-36 gap-8 m-6"
-        style={{ backgroundColor: '#005249', color: 'white' }}
-      >
-        <div>
-          <EmptyPieChart data={data1} innerRadius={20} outerRadius={25} />
-        </div>
-        <div>
-          <div className="text-3xl font-bold text-white-800">NPS Score</div>
-          <div className="text-lg font-bold text-gray-300">Customer Satisfaction</div>
-        </div>
-        <div>
-            <img src='./../../assets/ic_person.svg'/>
-        </div>
+const RightBarCard = () => (
+  <div className="flex flex-col">
+    <div
+      className="nps flex flex-row items-center rounded-3xl flex-shrink-0 h-36 gap-8 m-6"
+      style={{ backgroundColor: '#005249', color: 'white' }}
+    >
+      <div>
+        <EmptyPieChart data={data} innerRadius={20} outerRadius={25} />
       </div>
-      <div className="pie1 flex flex-col gap-8">
-        <div>Market Penetration</div>
-        <EmptyPieChart fullWidth data={data} innerRadius={60} outerRadius={80} />
+      <div>
+        <div className="text-3xl font-bold text-white-800">NPS Score</div>
+        <div className="text-lg font-bold text-gray-300">Customer Satisfaction</div>
       </div>
-      <div className="line1 gap-8">
-        <div className="">MRR Stats</div>
-        <LineComparison />
-      </div>
-      <div className="pie2 gap-8">
-        LTV/CAC Comparison
-        <PieComparison fullWidth />
+      <div>
+        <img src="./../../assets/ic_person.svg" />
       </div>
     </div>
-  );
-};
+
+    <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
+      <p className="font-bold text-sm">Market Penetration</p>
+      <div className="rightColCard flex flex-col items-center">
+        <div className="flex mt-6">
+          <TrendUp />
+          <p className="text-sm text-gray-500">
+            <span className="font-bold text-gray-900">2.6%</span> than last year
+          </p>
+        </div>
+        <EmptyPieChart data={data} innerRadius={60} outerRadius={80} />
+      </div>
+    </div>
+    <div className="line1">
+      <div className="">MRR Stats</div>
+      {/* <LineComparison /> */}
+    </div>
+    <div className="pie2">
+      LTV/CAC Comparison
+      {/* <PieComparison fullWidth /> */}
+    </div>
+  </div>
+);
 
 export default RightBarCard;

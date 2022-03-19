@@ -2,15 +2,8 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Label, Tooltip } from 'recharts';
 
-// const data = [
-//   { name: 'Group A', value: 40 },
-//   { name: 'Group B', value: 60 },
-// ];
-
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#826AF9', '#00AB55'];
-
 const EmptyPieChart = ({ fullWidth, data, innerRadius, outerRadius }) => (
-  <ResponsiveContainer width={fullWidth ? '100%' : 120} height={200}>
+  <ResponsiveContainer width={fullWidth ? '100%' : 200} height={200}>
     <PieChart width={300} height={300}>
       <Pie
         data={data}
@@ -19,6 +12,7 @@ const EmptyPieChart = ({ fullWidth, data, innerRadius, outerRadius }) => (
         dataKey="value" // make sure to map the dataKey to "value"
         innerRadius={innerRadius} // the inner and outer radius helps to create the progress look
         outerRadius={outerRadius}
+        cornerRadius={50}
       >
         {data.map((entry, index) => {
           if (index === 1) {
@@ -33,11 +27,11 @@ const EmptyPieChart = ({ fullWidth, data, innerRadius, outerRadius }) => (
           style={{
             fontSize: '32px',
             fontWeight: 'bold',
-            fontFamily: 'Roboto',
+            color: '#212B36',
           }}
         />
       </Pie>
-      <Tooltip/>
+      <Tooltip />
     </PieChart>
   </ResponsiveContainer>
 );
