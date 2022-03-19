@@ -1,0 +1,12 @@
+.CompanyData {
+    align-self: center;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.CompanyDashboard {
+    height: 100%;
+    width: 100%;
+}

@@ -1,0 +1,12 @@
+.CompanyName {
+  font-family: 'Public Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 48px;
+}
+
+.CompanyLogoImg {
+  height: 40px;
+  width: 40px;
+}

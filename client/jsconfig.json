@@ -3,6 +3,7 @@
     "baseUrl": "./src",
     "paths": {
       "@/*": ["./*"],
+      "@assets/*": ["./src/assets/*"],
       "@constants/*": ["./src/constants/*"],
       "@edgeServer/*": ["src/edgeServer/*"],
       "@layouts/*": ["./src/layouts/*"],
