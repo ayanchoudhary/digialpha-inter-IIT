@@ -1,26 +1,70 @@
-enum Size {
-  SMALL
-  REGULAR
+enum Quarter {
+  Q1
+  Q2
+  Q3
+  Q4
 }
 
-enum CoffeeType {
-  CAPPUCCINO
-  FLAT_WHITE
-  ESPRESSO
+type Date {
+  quarter: Quarter!
+  year: Int!
 }
 
-type Coffee {
-  id: String!
-  size: Size!
+type Acquisition {
+  leads: Int
+  accounts: Int
+  conversion: Float
+  salesCycle: Int
+  cac: Float
+  filingDate: Date
+}
+
+type Engagement {
+  users: Int
+  penetration: Float
+  nps: String
+  filingDate: Date
+}
+
+type Revenue {
+  rr: Int
+  growth: Float
+  arpa: Float
+  acv: Int
+  churnRate: Float
+  accountDist: Int
+  filingDate: Date
+}
+
+type UnitEcon {
+  ltv: Int
+  payback: Int
+  ltvRatio: Float
+  filingDate: Date
+}
+
+type SaaSGoals {
+  growth: Boolean
+  profitability: Boolean
+  maturity: Boolean
+  retention: Boolean
+  filingDate: Date
+}
+
+type Company {
+  id: ID!
   name: String!
-  type: CoffeeType!
+  cik: String!
+  sic: String!
+  symbol: String!
+  filingStart: Date
+  acquisition: [Acquisition]
+  engagement: [Engagement]
+  revenue: [Revenue]
+  unitEcon: [UnitEcon]
+  saasGoals: [SaaSGoals]
 }
 
 type Query {
-  orders: [Coffee]!
-  hello: String!
-}
-
-type Mutation {
-  orderCoffee(size: Size!, name: String!, type: CoffeeType!): Coffee
+  company(name: String, cik: String, sic: String, symbol: String, startDate: String, endDate: String): Company!
 }
