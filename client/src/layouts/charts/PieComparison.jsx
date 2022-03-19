@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 const ltv = [
   { name: 'LTV', value: 75 },
@@ -33,6 +33,7 @@ const PieComparison = ({ fullWidth }) => (
           return <Cell key={`cell-${index}`} fill="#007B55" />;
         })}
       </Pie>
+      <Tooltip/>
     </PieChart>
   </ResponsiveContainer>
 );

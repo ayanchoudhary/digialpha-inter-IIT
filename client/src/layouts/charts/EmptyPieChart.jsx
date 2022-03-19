@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Label } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Label, Tooltip } from 'recharts';
 
 // const data = [
 //   { name: 'Group A', value: 40 },
@@ -37,6 +37,7 @@ const EmptyPieChart = ({ fullWidth, data, innerRadius, outerRadius }) => (
           }}
         />
       </Pie>
+      <Tooltip/>
     </PieChart>
   </ResponsiveContainer>
 );
