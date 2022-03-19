@@ -7,6 +7,16 @@ import LineComparison from '../charts/LineComparison';
 import EmptyPieChart from '../charts/EmptyPieChart';
 import PieComparison from '../charts/PieComparison';
 
+const data = [
+  { name: 'Group A', value: 40 },
+  { name: 'Group B', value: 60 },
+];
+
+const nps = [
+  { name: 'NPS Score', value: 8 },
+  { name: 'Left', value: 2 },
+];
+
 const RightBarCard = ({ label, value, delta, graphType, graphData, bgcolor, color }) => {
   const isDeltaPositive = delta > 0;
 
@@ -19,8 +29,7 @@ const RightBarCard = ({ label, value, delta, graphType, graphData, bgcolor, colo
       </div>
       <div className="pie1 flex flex-col">
         <div>Market Penetration</div>
-
-        <EmptyPieChart fullWidth/>
+        <EmptyPieChart fullWidth data={data} innerRadius={60} outerRadius={80} />
       </div>
       <div className="line1">
         <div className="">MRR Stats</div>
