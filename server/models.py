@@ -19,7 +19,7 @@ class Acquistion:
 
     Methods
     -------
-    zeroAcqusition()
+    zeroAcqusition(date=None)
         returns a zero data point indicating no data found
     """
 
@@ -31,8 +31,8 @@ class Acquistion:
         self.cac = cac
         self.filingDate = date
 
-    def zeroAcquisition():
-        return Acquistion(0,0,0,0,0)
+    def zeroAcquisition(date=None):
+        return Acquistion(0,0,0,0,0,date)
 
 class Engagement:
     """
@@ -51,7 +51,7 @@ class Engagement:
 
     Methods
     -------
-    zeroEngagement()
+    zeroEngagement(date=None)
         returns a zero data point indicating no data found
     """
 
@@ -61,8 +61,8 @@ class Engagement:
         self.nps = nps
         self.filingDate = date
 
-    def zeroEngagement():
-        return Engagement(0,0,0)
+    def zeroEngagement(date=None):
+        return Engagement(0,0,0,date)
 
 class Revenue:
     """
@@ -85,7 +85,7 @@ class Revenue:
 
     Methods
     -------
-    zeroRevenue()
+    zeroRevenue(date=None)
         returns a zero data point indicating no data found
     """
 
@@ -98,8 +98,8 @@ class Revenue:
         self.accountDist = accountDist
         self.filingDate = date
 
-    def zeroRevenue():
-        return Revenue(0,0,0,0,0,0)
+    def zeroRevenue(date=None):
+        return Revenue(0,0,0,0,0,0,date)
 
 class UnitEcon:
     """
@@ -118,7 +118,7 @@ class UnitEcon:
 
     Methods
     -------
-    zeroUnitEcon()
+    zeroUnitEcon(date=None)
         returns a zero data point indicating no data found
     """
 
@@ -128,8 +128,8 @@ class UnitEcon:
         self.ltvRatio = ltvRatio
         self.filingDate = date
     
-    def zeroUnitEcon():
-        return UnitEcon(0,0,0)
+    def zeroUnitEcon(date=None):
+        return UnitEcon(0,0,0,date)
 
 class SaaSGoals:
     """
@@ -150,7 +150,7 @@ class SaaSGoals:
 
     Methods
     -------
-    negativeSaasGoals()
+    negativeSaasGoals(date=None)
         returns a zero data point indicating no data found
     """
 
@@ -161,8 +161,8 @@ class SaaSGoals:
         self.retention = retention
         self.filingDate = date
 
-    def negativeSaasGoals():
-        return SaaSGoals(False, False, False, False)
+    def negativeSaasGoals(date=None):
+        return SaaSGoals(False, False, False, False,date)
 
 class Quarter:
     """
@@ -181,6 +181,7 @@ class Date:
     A class to provide date object
 
     """
+
     def __init__(self, quarter, year):
         self.quarter = quarter
         self.year = int(year)
@@ -190,6 +191,7 @@ class Company:
     A class to provide a company object using the data points
 
     """
+    
     def __init__(self, name, id, cik, sic, symbol, date, acquisition, engagement, revenue, unitEcon, saasGoals):
         self.name = name
         self.id = id

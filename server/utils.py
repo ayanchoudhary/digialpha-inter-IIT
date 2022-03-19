@@ -48,16 +48,16 @@ Returns:
     list: a list of object representing SaasGoals objects
 """
 def get_company_details(company_id, filing_date):
-    # initialize zero states to return in case database entry does not exist
-    acquisition_obj = Acquistion.zeroAcquisition()
-    engagement_obj = Engagement.zeroEngagement()
-    revenue_obj = Revenue.zeroRevenue()
-    unitEcon_obj = UnitEcon.zeroUnitEcon()
-    saasGoals_obj = SaaSGoals.negativeSaasGoals()
-
     # fetch filing quarter details and convert to Date object
     filing_date_db_obj = db.dates.find_one({"_id": ObjectId(filing_date)})
     current_filing_date_obj = Date(quarter=filing_date_db_obj["quarter"], year=(filing_date_db_obj["year"]))
+
+    # initialize zero states to return in case database entry does not exist
+    acquisition_obj = Acquistion.zeroAcquisition(date=current_filing_date_obj)
+    engagement_obj = Engagement.zeroEngagement(date=current_filing_date_obj)
+    revenue_obj = Revenue.zeroRevenue(date=current_filing_date_obj)
+    unitEcon_obj = UnitEcon.zeroUnitEcon(date=current_filing_date_obj)
+    saasGoals_obj = SaaSGoals.negativeSaasGoals(date=current_filing_date_obj)
 
     # fetch acquistion data points for given quarter
     acquisition = db.acquisitions.find_one({"company_id": (company_id), "filingDate": (filing_date)})
