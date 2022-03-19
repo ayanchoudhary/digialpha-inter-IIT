@@ -7,8 +7,8 @@ class Acquistion:
         self.cac = cac
         self.filingDate = date
 
-    def zeroAcquisition():
-        return Acquistion(0,0,0,0,0)
+    def zeroAcquisition(date=None):
+        return Acquistion(0,0,0,0,0,date)
 
 class Engagement:
     def __init__(self, users, penetration, nps, date=None):
@@ -17,8 +17,8 @@ class Engagement:
         self.nps = nps
         self.filingDate = date
 
-    def zeroEngagement():
-        return Engagement(0,0,0)
+    def zeroEngagement(date=None):
+        return Engagement(0,0,0,date)
 
 class Revenue:
     def __init__(self, rr, growth, arpa, acv, churnRate, accountDist, date=None):
@@ -30,8 +30,8 @@ class Revenue:
         self.accountDist = accountDist
         self.filingDate = date
 
-    def zeroRevenue():
-        return Revenue(0,0,0,0,0,0)
+    def zeroRevenue(date=None):
+        return Revenue(0,0,0,0,0,0,date)
 
 class UnitEcon:
     def __init__(self, ltv, payback, ltvRatio, date=None):
@@ -40,8 +40,8 @@ class UnitEcon:
         self.ltvRatio = ltvRatio
         self.filingDate = date
     
-    def zeroUnitEcon():
-        return UnitEcon(0,0,0)
+    def zeroUnitEcon(date=None):
+        return UnitEcon(0,0,0,date)
 
 class SaaSGoals:
     def __init__(self, growth, profitability, maturity, retention, date=None):
@@ -51,8 +51,8 @@ class SaaSGoals:
         self.retention = retention
         self.filingDate = date
 
-    def negativeSaasGoals():
-        return SaaSGoals(False, False, False, False)
+    def negativeSaasGoals(date=None):
+        return SaaSGoals(False, False, False, False,date)
 
 class Quarter:
     def __init__(self, q1, q2, q3, q4):
