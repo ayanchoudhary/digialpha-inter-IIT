@@ -5,32 +5,18 @@ import Acquistion from './Acquistion';
 import Engagement from './Engagement';
 import Revenue from './Revenue';
 import UnitEcon from './UnitEcon';
-import './Dashboard.css';
-import Navbar from '../Navbar';
+import './../../styles/CompanyDashboard.css';
 
 const CompanyDashboard = () => {
   const { companyName } = useParams();
   console.log(companyName);
   return (
-    <div className="CompanyDashboard">
-      <Navbar />
-      <div>{companyName}</div>
-      <div className="CompanyData">
-        <div className="CompanyDetails">
-          <CompanyDetails />
-        </div>
-        <div className="Acquisition">
-          <Acquistion />
-        </div>
-        <div className="Engagement">
-          <Engagement />
-        </div>
-        <div className="Revenue">
-          <Revenue />
-        </div>
-        <div className="UnitEcon">
-          <UnitEcon />
-        </div>
+    <div className="CompanyDashboard flex flex-col items-center">
+      <div className="Row1">Row1</div>
+      <div className="Row2 flex flex-row justify-between">
+        <div className="Col1">Col1</div>
+        <div className="Col2">Col2</div>
+        <div className="Col3">Col3</div>
       </div>
     </div>
   );

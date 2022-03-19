@@ -1,10 +1,10 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import CompanyDashboard from '@layouts/companyDashboard';
+import Dashboard from '@layouts/index';
 
 const App = () => (
   <Routes>
-    <Route path="/company/:companyName" element={<CompanyDashboard />} />
+    <Route path="/company/:companyName" element={<Dashboard />} />
   </Routes>
 );
 
