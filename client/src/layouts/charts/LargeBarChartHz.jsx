@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const data = [
   {
@@ -54,9 +46,11 @@ const data = [
   },
 ];
 
-const LargeLineChart = () => (
+const LargeBarChartHz = () => (
   <ResponsiveContainer width="100%" height={400}>
-    <LineChart
+    <BarChart
+      layout="vertical"
+      barCategoryGap={1}
       width={500}
       height={300}
       data={data}
@@ -67,17 +61,24 @@ const LargeLineChart = () => (
     >
       <CartesianGrid strokeDasharray="3" vertical={false} />
       <XAxis
-        dataKey="name"
         axisLine={false}
         tickLine={false}
         tickMargin={20}
         tick={{ fill: '#919EAB' }}
+        type="number"
       />
-      <YAxis axisLine={false} tickLine={false} tickMargin={20} tick={{ fill: '#919EAB' }} />
+      <YAxis
+        axisLine={false}
+        tickLine={false}
+        tickMargin={20}
+        tick={{ fill: '#919EAB' }}
+        dataKey="name"
+        type="category"
+      />
       <Tooltip />
-      <Line type="monotone" dataKey="uv" stroke="#82ca9d" strokeWidth={2} dot={false} />
-    </LineChart>
+      <Bar dataKey="uv" fill="#00AB55" width={8} barSize={5} radius={100} />
+    </BarChart>
   </ResponsiveContainer>
 );
 
-export default LargeLineChart;
+export default LargeBarChartHz;

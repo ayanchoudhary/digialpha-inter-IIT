@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import MinStatCard from '@layouts/companyDashboard/MinStatCard';
 import '@layouts/companyDashboard/index.scss';
 import ChartWrapper from '@layouts/charts/ChartWrapper';
+import { CHART_TYPES } from '@constants/variations';
 
 const DUMMY_MINISTAT_DATA = [
   { label: 'Total Active Users', value: '18,765', delta: '2.6', graphType: 'line', graphData: [] },
@@ -30,8 +31,10 @@ const CompanyDashboard = () => {
           <MinStatCard {...stat} key={stat.label} />
         ))}
       </div>
-      <div>
-        <ChartWrapper chartLabel="Active Users Stats" />
+      <div className="flex flex-col gap-8">
+        <ChartWrapper chartLabel="Active Users Stats" type={CHART_TYPES.LINE} />
+        <ChartWrapper chartLabel="Quarterly Recurring Revenue" type={CHART_TYPES.BAR_HZ} />
+        <ChartWrapper chartLabel="ARR Growth Rate" type={CHART_TYPES.BAR} />
       </div>
     </div>
   );

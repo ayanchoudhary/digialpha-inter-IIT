@@ -3,8 +3,24 @@ import React from 'react';
 import { Select } from 'antd';
 import { ArrowDown } from '@assets/icons';
 import LargeLineChart from '@layouts/charts/LargeLineChart';
+import { CHART_TYPES } from '@constants/variations';
+import LargeBarChart from '@layouts/charts/LargeBarChart';
+import LargeBarChartHz from '@layouts/charts/LargeBarChartHz';
 
 const Option = Select.Option;
+
+const getChartFromType = (type) => {
+  switch (type) {
+    case CHART_TYPES.LINE:
+      return <LargeLineChart />;
+    case CHART_TYPES.BAR:
+      return <LargeBarChart />;
+    case CHART_TYPES.BAR_HZ:
+      return <LargeBarChartHz />;
+    default:
+      return;
+  }
+};
 
 const ChartWrapper = ({ chartLabel, type }) => {
   return (
@@ -25,9 +41,7 @@ const ChartWrapper = ({ chartLabel, type }) => {
           <Option value="quarterly">Quarterly</Option>
         </Select>
       </div>
-      <div>
-        <LargeLineChart />
-      </div>
+      <div>{getChartFromType(type)}</div>
     </div>
   );
 };
