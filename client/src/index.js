@@ -5,6 +5,7 @@ import App from './App';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { SERVER_URL } from '@constants/config';
 import { BrowserRouter } from 'react-router-dom';
+import 'antd/dist/antd.css';
 
 const client = new ApolloClient({
   uri: SERVER_URL,

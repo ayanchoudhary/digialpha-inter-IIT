@@ -3,6 +3,7 @@ import React from 'react';
 import { TrendUp, TrendDown } from '@assets/icons';
 import TinyLineChart from '@layouts/charts/TinyLineChart';
 import TinyBarChart from '@layouts/charts/TinyBarChart';
+import { CHART_TYPES } from '@constants/variations';
 
 const MinStatCard = ({ label, value, delta, graphType, graphData }) => {
   const isDeltaPositive = delta > 0;
@@ -18,7 +19,7 @@ const MinStatCard = ({ label, value, delta, graphType, graphData }) => {
         </div>
       </div>
       <div className="flex items-center ml-2">
-        {graphType === 'line' ? (
+        {graphType === CHART_TYPES.LINE ? (
           <TinyLineChart stroke={chartColor} />
         ) : (
           <TinyBarChart fill={chartColor} />
