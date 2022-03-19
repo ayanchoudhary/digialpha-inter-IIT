@@ -3,7 +3,7 @@ import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Label, Tooltip } from 'recharts';
 
 const EmptyPieChart = ({ fullWidth, data, innerRadius, outerRadius }) => (
-  <ResponsiveContainer width={fullWidth ? '100%' : 200} height={200}>
+  <ResponsiveContainer width={fullWidth ? '100%' : 200} height={fullWidth ? '100%' : 200}>
     <PieChart width={300} height={300}>
       <Pie
         data={data}

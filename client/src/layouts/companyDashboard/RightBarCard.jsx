@@ -19,21 +19,19 @@ const nps = [
 
 const RightBarCard = () => (
   <div className="flex flex-col">
-    <div
-      className="nps flex flex-row items-center rounded-3xl flex-shrink-0 h-36 gap-8 m-6"
+    {/* <div
+      className="rightColCard flex flex-row items-center rounded-3xl flex-shrink-0 h-36 gap-8 m-6"
       style={{ backgroundColor: '#005249', color: 'white' }}
     >
-      <div>
-        <EmptyPieChart data={data} innerRadius={20} outerRadius={25} />
+      <div style={{width: }}>
+        <EmptyPieChart data={data} innerRadius={20} outerRadius={25} fullWidth />
       </div>
       <div>
         <div className="text-3xl font-bold text-white-800">NPS Score</div>
         <div className="text-lg font-bold text-gray-300">Customer Satisfaction</div>
       </div>
-      <div>
-        <img src="./../../assets/ic_person.svg" />
-      </div>
-    </div>
+      <div><img src="./../../assets/ic_person.svg" /></div>
+    </div> */}
 
     <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
       <p className="font-bold text-sm">Market Penetration</p>
