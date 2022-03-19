@@ -48,10 +48,10 @@ const data = [
 ];
 
 const TinyBarChart = ({ fill }) => (
-  <ResponsiveContainer width={120} height="100%">
+  <ResponsiveContainer width={100} height="80%">
     <BarChart width={120} height={120} data={data}>
       <Tooltip />
-      <Bar dataKey="uv" fill={fill} />
+      <Bar dataKey="pv" fill={fill} barSize={5} radius={100} />
     </BarChart>
   </ResponsiveContainer>
 );

@@ -17,7 +17,7 @@ const MinStatCard = ({ label, value, delta, graphType, graphData }) => {
           <span className="font-bold text-gray-800 ml-2">{delta}%&nbsp;</span> than last year
         </div>
       </div>
-      <div>
+      <div className="flex items-center ml-2">
         {graphType === 'line' ? (
           <TinyLineChart stroke={chartColor} />
         ) : (
