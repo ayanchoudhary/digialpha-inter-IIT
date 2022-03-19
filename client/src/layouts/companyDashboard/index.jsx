@@ -5,6 +5,8 @@ import SideBarCard from '@layouts/companyDashboard/SideBarCard';
 import '@layouts/companyDashboard/index.scss';
 import ChartWrapper from '@layouts/charts/ChartWrapper';
 import { CHART_TYPES } from '@constants/variations';
+import LineComparison from '../charts/LineComparison';
+import RightBarCard from './RightBarCard';
 
 const DUMMY_MINISTAT_DATA = [
   { label: 'Total Active Users', value: '18,765', delta: '2.6', graphType: 'line', graphData: [] },
@@ -86,9 +88,7 @@ const CompanyDashboard = () => {
           </div>
         </div>
         <div className="Col3 flex-shrink-0">
-          {DUMMY_MINISTAT_DATA2.map((stat) => (
-            <SideBarCard {...stat} key={stat.label} />
-          ))}
+          <RightBarCard></RightBarCard>
         </div>
       </div>
     </div>
