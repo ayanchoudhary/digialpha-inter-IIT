@@ -1,13 +1,13 @@
 from flask import Flask, request, jsonify, send_from_directory, make_response
-from flask_cors import CORS
 from ariadne import graphql_sync, make_executable_schema, gql, load_schema_from_path
 from ariadne.constants import PLAYGROUND_HTML
-from models import *
-import os
-from mongo import db
-from bson.objectid import ObjectId
-import io
+from flask_cors import CORS
+from views import query
+from utils import *
 import csv
+import os
+import io
+
 
 type_defs = gql(load_schema_from_path("./schema.graphql"))
 schema = make_executable_schema(type_defs, query)
@@ -20,23 +20,6 @@ app = Flask(__name__,
     static_url_path='')
 
 cors = CORS(app, resources={r"/graphql": {"origins": "*"}})
-
-def get_company_csv_data(company_id):
-    company = db.companies.find_one({"_id": ObjectId(company_id)})
-    # Get the first instance of filing available and then get the filing details for all quarters after this
-    filing_date = db.dates.find_one({"_id": ObjectId(company["filingStart"])})
-    filing_date_obj = Date(quarter=filing_date["quarter"], year=filing_date["year"])
-
-    filings_dates = get_filing_dates(filing_date_obj)
-
-    acqusitions, engagements, revenues, unitEcons, saasGoals = [], [], [], [], []
-    company_data = []
-    for date in filings_dates:
-        acquisition_obj, engagement_obj, revenue_obj, unitEcon_obj, saasGoals_obj = get_company_details(company_id, str(date["_id"]))
-
-        company_data.append([company["name"], date["year"], date["quarter"], company['cik'], company['sic'], company['symbol'], acquisition_obj.leads, acquisition_obj.accounts, acquisition_obj.conversion, acquisition_obj.salesCycle, acquisition_obj.cac, engagement_obj.users, engagement_obj.penetration, engagement_obj.nps,  revenue_obj.rr, revenue_obj.growth, revenue_obj.arpa, revenue_obj.acv, revenue_obj.churnRate, revenue_obj.accountDist, unitEcon_obj.ltv, unitEcon_obj.payback, unitEcon_obj.ltvRatio, saasGoals_obj.growth, saasGoals_obj.profitability, saasGoals_obj.maturity, saasGoals_obj.retention])
-
-    return company_data
 
 @app.route('/')
 def root():
@@ -69,7 +52,31 @@ def download_company_paramas():
     company_id = args.get('company_id', None)
     si = io.StringIO()
     cw = csv.writer(si)
-    csv_header = ['company_name','year', 'quarter', 'cik', 'sic', 'symbol', 'leads', 'accounts', 'conversion', 'salesCycle', 'cac', 'users', 'penetration', 'nps', 'rr', 'growth', 'arpa', 'acv', 'churnRate', 'accountDist', 'ltv', 'payback', 'ltvRatio', 'growth', 'profitability', 'maturity', 'retention']
+    csv_header = [
+        'Company Name',
+        'Year', 
+        'Quarter', 
+        'CIK', 
+        'SIC', 
+        'Symbol', 
+        'Qualified Leads', 
+        'New Accounts', 
+        'Percentage Conversion', 
+        'Sales Cycle Length', 
+        'CAC', 
+        'Active Users', 
+        'Percentage penetration', 
+        'NPS', 
+        'RR', 
+        'RR Growth Rate', 
+        'ARPA', 
+        'ACV', 
+        'Churn Rate', 
+        'Account Distribution', 
+        'LTV', 
+        'CAC Payback', 
+        'LTV/CAC Ratio'
+    ]
     company_data = get_company_csv_data(company_id)
     cw.writerow(csv_header)
     for row in company_data:
