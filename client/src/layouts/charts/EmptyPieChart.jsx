@@ -2,7 +2,7 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Label, Tooltip } from 'recharts';
 
-const EmptyPieChart = ({ fullWidth, data, innerRadius, outerRadius, val }) => {
+const EmptyPieChart = ({ fullWidth, data, innerRadius, outerRadius }) => {
   return (
     <ResponsiveContainer width={fullWidth ? '100%' : 200} height={fullWidth ? '100%' : 200}>
       <PieChart width={300} height={300}>
@@ -10,25 +10,20 @@ const EmptyPieChart = ({ fullWidth, data, innerRadius, outerRadius, val }) => {
           data={data}
           cx="50%"
           cy="50%"
-          dataKey={val} // make sure to map the dataKey to "value"
-          innerRadius={innerRadius} // the inner and outer radius helps to create the progress look
+          dataKey="value"
+          innerRadius={innerRadius}
           outerRadius={outerRadius}
           cornerRadius={50}
+          fill="#f4f4f4"
         >
-          {data.map((entry, index) => {
-            if (index === 1) {
-              return <Cell key={`cell-${index}`} fill="#919EAB" opacity={0.16} />; // make sure to map the index to the colour you want
-            }
-            return <Cell key={`cell-${index}`} fill="green" />;
-          })}
+          <Cell key={`cell`} fill="#007B55" />
           <Label
-            value={data[0].value}
+            value={`${data[0].value}%`}
             position="center"
-            fill="grey"
+            fill="#212B36"
             style={{
-              fontSize: '32px',
+              fontSize: '30px',
               fontWeight: 'bold',
-              color: '#212B36',
             }}
           />
         </Pie>

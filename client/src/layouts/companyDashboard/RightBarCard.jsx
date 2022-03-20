@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { TrendUp, TrendDown } from '@assets/icons';
-import LineComparison from '../charts/LineComparison';
 import EmptyPieChart from '../charts/EmptyPieChart';
 import PieComparison from '../charts/PieComparison';
 import useStore from './../../store';
@@ -9,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { getArrGraphData, getDelta } from './../../utils/utils';
 import { useMemo } from 'react';
 import { getCumulativeSum } from '@utils/utils';
+import TinyLineChart from '@layouts/charts/TinyLineChart';
 
 const RightBarCard = () => {
   const company = useStore((state) => state.company);
@@ -26,18 +26,21 @@ const RightBarCard = () => {
     }
     if (company.revenue) {
       setrrDelta(getDelta(company.revenue, 'rr'));
-      setrr(getArrGraphData(company.revenue, 'rr', 'MRR'));
+      setrr(getArrGraphData(company.revenue, 'rr', 'mrr'));
       setchurnRateDelta(getDelta(company.revenue, 'churnRate'));
       setchurnRate(getArrGraphData(company.revenue, 'churnRate', 'churnRate'));
     }
   }, [company]);
 
-  const penetrationData = useMemo(
-    () => getCumulativeSum(penetration, 'penetration'),
-    [penetration],
-  );
+  const penetrationData = useMemo(() => {
+    const sum = getCumulativeSum(penetration, 'penetration') + 25;
+    return [{ value: sum, label: 'Total Penetration' }, { value: 100 - sum }];
+  }, [penetration]);
 
-  console.log('penetrationData', penetrationData);
+  const mrrAndChurnRateData = useMemo(
+    () => rr.map((a, i) => ({ ...a, churnRate: churnRate[i]?.churnRate })),
+    [rr, churnRate],
+  );
 
   return (
     <div className="flex flex-col">
@@ -50,7 +53,7 @@ const RightBarCard = () => {
               <span className="font-bold text-gray-900">{penetrationDelta}%</span> than last year
             </p>
           </div>
-          <EmptyPieChart data={penetration} innerRadius={60} outerRadius={80} val="penetration" />
+          <EmptyPieChart data={penetrationData} innerRadius={60} outerRadius={80} />
         </div>
       </div>
 
@@ -59,8 +62,14 @@ const RightBarCard = () => {
         <p className="text-xs text-gray-500">
           ({rrDelta}% New | {churnRateDelta}% Churnned) than last year
         </p>
-        <div className="width-250 flex flex-col items-center mt-4">
-          <LineComparison data1={rr} data2={churnRate} val1="MRR" val2="churnRate" />
+        <div className="width-250 flex flex-col items-center mt-4 h-52">
+          <TinyLineChart
+            fullWidth
+            graphData={mrrAndChurnRateData}
+            val="mrr"
+            labelFormatter={(a, b) => `${b[0]?.value} (${b[0]?.payload?.date || ''})`}
+            formatter={(a, b, c) => [`${c?.payload?.churnRate}%`, 'Churn Rate']}
+          />
         </div>
       </div>
 
