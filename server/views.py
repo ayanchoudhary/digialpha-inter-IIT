@@ -73,9 +73,9 @@ def resolve_company(_, info, name=None, cik=None, symbol=None, startDate=None, e
 def resolve_search_company(_, info, search=None):
     # Fetch company and return its unique id
     print(search)
-    companies_by_name = list(db.companies.find({"name": re.compile('^.*' + search + '*')}).limit(20))
-    companies_by_cik = list(db.companies.find({"cik": re.compile('^.*' + search + '*')}).limit(20))
-    companies_by_symbol = list(db.companies.find({"symbol": re.compile('^.*' + search + '*')}).limit(20))
+    companies_by_name = list(db.companies.find({"name": re.compile('^.*' + search + '.*')}).limit(20))
+    companies_by_cik = list(db.companies.find({"cik": re.compile('^.*' + search + '.*')}).limit(20))
+    companies_by_symbol = list(db.companies.find({"symbol": re.compile('^.*' + search + '.*')}).limit(20))
     companies = []
     for company in companies_by_name:
         companies.append(company)
