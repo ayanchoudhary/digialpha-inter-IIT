@@ -21,6 +21,7 @@ const Landing = () => {
     skip: !searchText,
     fetchPolicy: 'cache-and-network',
   });
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     if (data) updateSearchCompanies(data.searchCompany);
@@ -60,13 +61,15 @@ const Landing = () => {
               placeholder="Search by Company Name or CIK number"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
-            ></input>
+              onFocus={() => setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+            />
           </div>
           <div>
             <button className="bg-black text-white rounded-lg p-4 ml-0">SEARCH</button>
           </div>
         </div>
-        {suggestions.length > 0 && (
+        {searchCompanies.length > 0 && showDropdown && (
           <div className="suggestions space-y-4 p-2  bg-white rounded-lg">
             {searchCompanies.map((suggestion, i) => {
               return (
