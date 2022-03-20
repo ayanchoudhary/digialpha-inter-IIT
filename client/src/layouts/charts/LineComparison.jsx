@@ -31,11 +31,6 @@ import PropTypes from 'prop-types';
 
 const LineComparison = ({ data1, data2, val1, val2 }) => {
   let data = [];
-  console.log(data1);
-  console.log(data2);
-
-  console.log(val1);
-  console.log(val2);
   for (let i = 0; i < data1.length; i++) {
     let obj = {};
     obj['name'] = i;
@@ -43,7 +38,6 @@ const LineComparison = ({ data1, data2, val1, val2 }) => {
     obj[`${val2}`] = data2[i][`${val2}`];
     data.push(obj);
   }
-  console.log(data);
 
   return (
     <div>

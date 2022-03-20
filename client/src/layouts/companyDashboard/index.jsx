@@ -14,8 +14,8 @@ const CompanyDashboard = () => {
   const company = useStore((state) => state.company);
   const [leadsDelta, setleadsDelta] = useState(0);
   const [leads, setleads] = useState([0]);
-  const [rrDelta, setrrDelta] = useState(0);
-  const [rr, setrr] = useState([0]);
+  const [arpaDelta, setarpaDelta] = useState(0);
+  const [arpa, setarpa] = useState([0]);
   const [salesCycleDelta, setsalesCycleDelta] = useState(0);
   const [salesCycle, setsalesCycle] = useState([0]);
   const [accountDist, setaccountDist] = useState([0]);
@@ -29,6 +29,8 @@ const CompanyDashboard = () => {
   const [accounts, setaccounts] = useState([0]);
   const [paybackDelta, setpaybackDelta] = useState(0);
   const [payback, setpayback] = useState([0]);
+  const [rrDelta, setrrDelta] = useState(0);
+  const [rr, setrr] = useState([0]);
 
   const DUMMY_MINISTAT_DATA = [
     {
@@ -82,10 +84,10 @@ const CompanyDashboard = () => {
     },
     {
       label: 'Average Revenue',
-      value: rr[rr.length - 1],
-      delta: rrDelta,
+      value: arpa[arpa.length - 1],
+      delta: arpaDelta,
       graphType: 'line',
-      graphData: rr,
+      graphData: arpa,
       bgcolor: '#C8FACD',
       color: '#005249',
       val: 'avgRevenue',
@@ -111,8 +113,10 @@ const CompanyDashboard = () => {
     }
     if (company.revenue) {
       setaccountDist(getArrGraphData(company.revenue, 'accountDist', 'accountDist'));
+      setarpaDelta(getDelta(company.revenue, 'arpa'));
+      setarpa(getArrGraphData(company.revenue, 'arpa', 'avgRevenue'));
       setrrDelta(getDelta(company.revenue, 'rr'));
-      setrr(getArrGraphData(company.revenue, 'rr', 'avgRevenue'));
+      setrr(getArrGraphData(company.revenue, 'rr', 'recurringRevenue'));
     }
     if (company.unitEcon) {
       setltvDelta(getDelta(company.unitEcon, 'ltv'));
@@ -144,8 +148,8 @@ const CompanyDashboard = () => {
         </div>
         <div className="Col2 flex-shrink-0">
           <div className="flex flex-col gap-8">
-            <ChartWrapper chartLabel="Active Users Stats" type={CHART_TYPES.LINE} />
-            <ChartWrapper chartLabel="Quarterly Recurring Revenue" type={CHART_TYPES.BAR_HZ} />
+            <ChartWrapper chartLabel="Active Users Stats" type={CHART_TYPES.LINE} data={users} val='users'/>
+            <ChartWrapper chartLabel="Quarterly Recurring Revenue" type={CHART_TYPES.BAR_HZ} data={rr} val='recurringRevenue' />
             <ChartWrapper chartLabel="ARR Growth Rate" type={CHART_TYPES.BAR} />
           </div>
         </div>

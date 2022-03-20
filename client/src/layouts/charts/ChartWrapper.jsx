@@ -9,20 +9,20 @@ import LargeBarChartHz from '@layouts/charts/LargeBarChartHz';
 
 const Option = Select.Option;
 
-const getChartFromType = (type) => {
+const getChartFromType = (type, data, val) => {
   switch (type) {
     case CHART_TYPES.LINE:
-      return <LargeLineChart />;
+      return <LargeLineChart data={data} val={val}/>;
     case CHART_TYPES.BAR:
-      return <LargeBarChart />;
+      return <LargeBarChart data={data} val={val} />;
     case CHART_TYPES.BAR_HZ:
-      return <LargeBarChartHz />;
+      return <LargeBarChartHz data={data} val={val} />;
     default:
       return;
   }
 };
 
-const ChartWrapper = ({ chartLabel, type }) => {
+const ChartWrapper = ({ chartLabel, type, data, val }) => {
   return (
     <div className="bg-white soft-box-shadow rounded-3xl p-6 chartWrapper">
       <div className="flex justify-between items-start">
@@ -41,7 +41,7 @@ const ChartWrapper = ({ chartLabel, type }) => {
           <Option value="quarterly">Quarterly</Option>
         </Select>
       </div>
-      <div>{getChartFromType(type)}</div>
+      <div>{getChartFromType(type, data, val)}</div>
     </div>
   );
 };
