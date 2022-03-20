@@ -3,7 +3,7 @@ from bson.objectid import ObjectId
 from models import Date, Company
 from mongo import db
 from utils import *
-
+import re
 query = QueryType()
 
 """Returns company details for a given company and date range
@@ -22,16 +22,13 @@ Returns:
 @query.field("company")
 def resolve_company(_, info, name=None, cik=None, sic=None, symbol=None, startDate=None, endDate=None):
     # Fetch company and return its unique id
-    if name:
-        company = db.companies.find_one({"name": (name)})
-    elif cik:
-        company = db.companies.find_one({"cik": (cik)})
-    elif sic:
-        company = db.companies.find_one({"sic": (sic)})
-    elif symbol:
-        company = db.companies.find_one({"symbol": (symbol)})
-    else:
-        company = db.companies.find_one({})
+    company = db.companies.find_one({"name": re.compile('^' + name + '$', re.IGNORECASE)})
+    if not company:
+        company = db.companies.find_one({"cik": re.compile('^' + name + '$', re.IGNORECASE)})
+    if not company:
+        company = db.companies.find_one({"sic": re.compile('^' + name + '$', re.IGNORECASE)})
+    if not company:
+        company = db.companies.find_one({"symbol": re.compile('^' + name + '$', re.IGNORECASE)})
     company_id = str(company["_id"])
 
     # Get the first instance of filing available and then get the filing details for all quarters after this
@@ -75,3 +72,43 @@ def resolve_company(_, info, name=None, cik=None, sic=None, symbol=None, startDa
         saasGoals=saasGoals
     )
     return company_obj
+
+@query.field("searchCompany")
+def resolve_search_company(_, info, search=None):
+    # Fetch company and return its unique id
+    print(search)
+    companies_by_name = list(db.companies.find({"name": re.compile('^.*' + search + '*')}).limit(20))
+    companies_by_cik = list(db.companies.find({"cik": re.compile('^.*' + search + '*')}).limit(20))
+    companies_by_sic = list(db.companies.find({"sic": re.compile('^.*' + search + '*')}).limit(20))
+    companies_by_symbol = list(db.companies.find({"symbol": re.compile('^.*' + search + '*')}).limit(20))
+    companies = []
+    for company in companies_by_name:
+        companies.append(company)
+    for company in companies_by_cik:
+        if company not in companies:
+            companies.append(company)
+    for company in companies_by_sic:
+        if company not in companies:
+            companies.append(company)
+    for company in companies_by_symbol:
+        if company not in companies:
+            companies.append(company)
+    companies_objs = []
+    for company in companies:
+        filling_date = db.dates.find_one({"_id": ObjectId(company["filingStart"])})
+        filing_date_obj = Date(quarter=filling_date["quarter"], year=filling_date["year"])
+
+        companies_objs.append(Company(
+            name=company["name"] if "name" in company else None,
+            id=str(company["_id"]),
+            cik=company["cik"] if "cik" in company else None,
+            sic=company["sic"] if "sic" in company else None,
+            symbol=company["symbol"] if "symbol" in company else None,
+            date=filing_date_obj,
+            acquisition=[],
+            engagement=[],
+            revenue=[],
+            unitEcon=[],
+            saasGoals=[]
+        ))
+    return companies_objs
