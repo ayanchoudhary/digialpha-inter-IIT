@@ -1,12 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import useStore from '../store';
 import test from './../assets/logo.png';
 import { SearchIcon } from './../assets/icons';
+import { useGetSearchCompany } from '../edgeServer/getSearchCompanies';
+import { useLazyQuery } from '@apollo/client';
+import { GET_SEARCH_COMPANY } from '@edgeServer/queries';
+import { Link } from 'react-router-dom';
+
 const Landing = () => {
   const [suggestions, setSuggestions] = useState([
     { name: 'Adobe Pvt Ltfd Company Demo', code: 'CIK123458973002345' },
     { name: 'Adobe Pvt Ltfd Company Demo', code: 'CIK123458973002345' },
     { name: 'Adobe Pvt Ltfd Company Demo', code: 'CIK123458973002345' },
   ]);
+  const [searchText, setSearchText] = useState('');
+  const searchCompanies = useStore((state) => state.searchCompanies);
+  const updateSearchCompanies = useStore((state) => state.updateSearchCompanies);
+  const [getSearchCompanies, { loading, error, data }] = useLazyQuery(GET_SEARCH_COMPANY, {
+    variables: { search: searchText },
+    skip: !searchText,
+    fetchPolicy: 'cache-and-network',
+  });
+
+  useEffect(() => {
+    if (data) updateSearchCompanies(data.searchCompany);
+  }, [data]);
+
+  useEffect(() => {
+    console.log(searchCompanies);
+  }, [searchCompanies]);
+
+  useEffect(() => {
+    if (searchText.length > 2) {
+      getSearchCompanies(searchText);
+    }
+  }, [searchText]);
+
   return (
     <div className="flex items-center align-middle">
       <div className="background">
@@ -29,6 +58,8 @@ const Landing = () => {
             <input
               className="w-2/4 rounded-lg bg-white p-2 text-lg text-center"
               placeholder="Search by Company Name or CIK number"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
             ></input>
           </div>
           <div>
@@ -36,17 +67,19 @@ const Landing = () => {
           </div>
         </div>
         {suggestions.length > 0 && (
-            <div className="suggestions space-y-4 p-2  bg-white rounded-lg">
-              {suggestions.map((suggestion) => {
-                return (
-                  <div className="suggestion-row flex flex-row justify-between px-2" key={0}>
+          <div className="suggestions space-y-4 p-2  bg-white rounded-lg">
+            {searchCompanies.map((suggestion, i) => {
+              return (
+                <Link to={`/company/${suggestion.name}`} key={i}>
+                  <div className="suggestion-row flex flex-row justify-between px-2">
                     <div className="name">{suggestion.name}</div>
-                    <div className="code">{suggestion.code}</div>
+                    <div className="code">CIK: {suggestion.cik}</div>
                   </div>
-                );
-              })}
-            </div>
-          )}
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
