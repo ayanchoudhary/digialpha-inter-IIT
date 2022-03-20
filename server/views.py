@@ -11,7 +11,6 @@ query = QueryType()
 Args:
     name (str): name of company to fetch data for
     cik (str): cik of company to fetch data for
-    sic (str): sic of company to fetch data for
     symbol (str): symbol of company to fetch data for
     startDate (str): the starting date to fetch data points from
     endDate (str): the ending date to fetch data points till
@@ -20,13 +19,11 @@ Returns:
     Company: a company object containing metadata and set of required datapoints
 """
 @query.field("company")
-def resolve_company(_, info, name=None, cik=None, sic=None, symbol=None, startDate=None, endDate=None):
+def resolve_company(_, info, name=None, cik=None, symbol=None, startDate=None, endDate=None):
     # Fetch company and return its unique id
     company = db.companies.find_one({"name": re.compile('^' + name + '$', re.IGNORECASE)})
     if not company:
         company = db.companies.find_one({"cik": re.compile('^' + name + '$', re.IGNORECASE)})
-    if not company:
-        company = db.companies.find_one({"sic": re.compile('^' + name + '$', re.IGNORECASE)})
     if not company:
         company = db.companies.find_one({"symbol": re.compile('^' + name + '$', re.IGNORECASE)})
     company_id = str(company["_id"])
@@ -62,7 +59,6 @@ def resolve_company(_, info, name=None, cik=None, sic=None, symbol=None, startDa
         name=company["name"],
         id=str(company["_id"]),
         cik=company["cik"],
-        sic=company["sic"],
         symbol=company["symbol"],
         date=filing_date_obj,
         acquisition=acqusitions,
@@ -79,15 +75,11 @@ def resolve_search_company(_, info, search=None):
     print(search)
     companies_by_name = list(db.companies.find({"name": re.compile('^.*' + search + '*')}).limit(20))
     companies_by_cik = list(db.companies.find({"cik": re.compile('^.*' + search + '*')}).limit(20))
-    companies_by_sic = list(db.companies.find({"sic": re.compile('^.*' + search + '*')}).limit(20))
     companies_by_symbol = list(db.companies.find({"symbol": re.compile('^.*' + search + '*')}).limit(20))
     companies = []
     for company in companies_by_name:
         companies.append(company)
     for company in companies_by_cik:
-        if company not in companies:
-            companies.append(company)
-    for company in companies_by_sic:
         if company not in companies:
             companies.append(company)
     for company in companies_by_symbol:
@@ -102,7 +94,6 @@ def resolve_search_company(_, info, search=None):
             name=company["name"] if "name" in company else None,
             id=str(company["_id"]),
             cik=company["cik"] if "cik" in company else None,
-            sic=company["sic"] if "sic" in company else None,
             symbol=company["symbol"] if "symbol" in company else None,
             date=filing_date_obj,
             acquisition=[],

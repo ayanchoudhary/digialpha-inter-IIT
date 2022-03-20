@@ -133,7 +133,6 @@ def get_company_csv_data(company_id):
             date["year"],
             date["quarter"], 
             company['cik'], 
-            company['sic'], 
             company['symbol'], 
             acquisition_obj.leads, 
             acquisition_obj.accounts, 

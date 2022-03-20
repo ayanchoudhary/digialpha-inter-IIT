@@ -55,7 +55,6 @@ type Company {
   id: ID!
   name: String!
   cik: String!
-  sic: String!
   symbol: String!
   filingStart: Date
   acquisition: [Acquisition]
@@ -69,12 +68,11 @@ type SearchCompany {
   id: ID!
   name: String!
   cik: String!
-  sic: String!
   symbol: String!
   filingStart: Date
 }
 
 type Query {
-  company(name: String, cik: String, sic: String, symbol: String, startDate: String, endDate: String): Company!
+  company(name: String, cik: String, symbol: String, startDate: String, endDate: String): Company!
   searchCompany(search: String!): [SearchCompany]
 }
