@@ -10,25 +10,46 @@ import RightBarCard from './RightBarCard';
 import useStore from './../../store';
 import { getDelta, getArrGraphData } from './../../utils/utils';
 
-const DUMMY_MINISTAT_DATA = [
-  { label: 'Total Active Users', value: '18,765', delta: '2.6', graphType: 'line', graphData: [] },
-  { label: 'New Accounts', value: '18,765', delta: '-0.6', graphType: 'line', graphData: [] },
-  {
-    label: 'Customer Acquisition Cost',
-    value: '18,765',
-    delta: '2.6',
-    graphType: 'bar',
-    graphData: [],
-  },
-  { label: 'Lifetime Value', value: '18,765', delta: '-2.6', graphType: 'bar', graphData: [] },
-  { label: 'CAC Payback', value: '18,765', delta: '2.6', graphType: 'line', graphData: [] },
-];
-
 const CompanyDashboard = () => {
   const { companyName } = useParams();
   const company = useStore((state) => state.company);
   const [leadsDelta, setleadsDelta] = useState(0);
   const [leads, setleads] = useState([0]);
+  const [rrDelta, setrrDelta] = useState(0);
+  const [rr, setrr] = useState([0]);
+  const [salesCycleDelta, setsalesCycleDelta] = useState(0);
+  const [salesCycle, setsalesCycle] = useState([0]);
+  const [accountDist, setaccountDist] = useState([0]);
+  const [ltvDelta, setltvDelta] = useState(0);
+  const [ltv, setltv] = useState([0]);
+  const [cacDelta, setcacDelta] = useState(0);
+  const [cac, setcac] = useState([0]);
+
+  const DUMMY_MINISTAT_DATA = [
+    {
+      label: 'Total Active Users',
+      value: '18,765',
+      delta: '2.6',
+      graphType: 'line',
+      graphData: [],
+    },
+    { label: 'New Accounts', value: '18,765', delta: '-0.6', graphType: 'line', graphData: [] },
+    {
+      label: 'Customer Acquisition Cost',
+      value: cac[cac.length-1],
+      delta: cacDelta,
+      graphType: 'bar',
+      graphData: cac,
+    },
+    {
+      label: 'Lifetime Value',
+      value: ltv[ltv.length - 1],
+      delta: ltvDelta,
+      graphType: 'bar',
+      graphData: ltv,
+    },
+    { label: 'CAC Payback', value: '18,765', delta: '2.6', graphType: 'line', graphData: [] },
+  ];
 
   const DUMMY_MINISTAT_DATA2 = [
     {
@@ -39,42 +60,53 @@ const CompanyDashboard = () => {
       graphData: leads,
       bgcolor: '#C8FACD',
       color: '#005249',
+      val: 'leads',
     },
     {
       label: 'Sales Cycle',
-      value: '18,765',
-      delta: '-0.6',
+      value: salesCycle[salesCycle.length - 1],
+      delta: salesCycleDelta,
       graphType: 'line',
-      graphData: [],
+      graphData: salesCycle,
       bgcolor: '#FFF7CD',
       color: '#7A4F01',
+      val: 'salesCycle',
     },
     {
       label: 'Average Revenue',
-      value: '18,765',
-      delta: '2.6',
+      value: rr[rr.length - 1],
+      delta: rrDelta,
       graphType: 'line',
-      graphData: [],
+      graphData: rr,
       bgcolor: '#C8FACD',
       color: '#005249',
+      val: 'avgRevenue',
     },
     {
       label: 'Distribution of accounts',
       graphType: 'pie',
-      graphData: [
-        { name: 'Group A', value: 400 },
-        { name: 'Group B', value: 300 },
-        { name: 'Group C', value: 300 },
-        { name: 'Group D', value: 200 },
-      ],
+      graphData: accountDist,
+      val: 'accountDist',
     },
   ];
 
   useEffect(() => {
-    console.log(company.acquisition);
     if (company.acquisition) {
       setleadsDelta(getDelta(company.acquisition, 'leads'));
       setleads(getArrGraphData(company.acquisition, 'leads', 'leads'));
+      setsalesCycleDelta(getDelta(company.acquisition, 'salesCycle'));
+      setsalesCycle(getArrGraphData(company.acquisition, 'salesCycle', 'salesCycle'));
+      setcacDelta(getDelta(company.acquisition, 'cac'));
+      setcac(getArrGraphData(company.acquisition, 'cac', 'cac'));
+    }
+    if (company.revenue) {
+      setaccountDist(getArrGraphData(company.revenue, 'accountDist', 'accountDist'));
+      setrrDelta(getDelta(company.revenue, 'rr'));
+      setrr(getArrGraphData(company.revenue, 'rr', 'avgRevenue'));
+    }
+    if (company.unitEcon) {
+      setltvDelta(getDelta(company.unitEcon, 'ltv'));
+      setltv(getArrGraphData(company.unitEcon, 'ltv', 'ltv'));
     }
   }, [company]);
 

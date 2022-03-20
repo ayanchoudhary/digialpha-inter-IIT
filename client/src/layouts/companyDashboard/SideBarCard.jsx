@@ -4,7 +4,7 @@ import { TrendUp, TrendDown } from '@assets/icons';
 import TinyLineChart from '@layouts/charts/TinyLineChart';
 import TinyPieChart from '@layouts/charts/TinyPieChart';
 
-const SideBarCard = ({ label, value, delta, graphType, graphData, bgcolor, color }) => {
+const SideBarCard = ({ label, value, delta, graphType, graphData, bgcolor, color, val }) => {
   const isDeltaPositive = delta > 0;
 
   return (
@@ -29,9 +29,9 @@ const SideBarCard = ({ label, value, delta, graphType, graphData, bgcolor, color
       </div>
       <div style={{ height: 200 }}>
         {graphType === 'line' ? (
-          <TinyLineChart stroke={color} fullWidth graphData={graphData} />
+          <TinyLineChart stroke={color} fullWidth graphData={graphData} val={val} />
         ) : (
-          <TinyPieChart fullWidth graphData={graphData} />
+          <TinyPieChart fullWidth graphData={graphData} val={val} />
         )}
       </div>
     </div>
