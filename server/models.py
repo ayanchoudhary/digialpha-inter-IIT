@@ -192,11 +192,12 @@ class Company:
 
     """
     
-    def __init__(self, name, id, cik, symbol, date, acquisition, engagement, revenue, unitEcon, saasGoals):
+    def __init__(self, name, id, cik, symbol, sentiment, date, acquisition, engagement, revenue, unitEcon, saasGoals):
         self.name = name
         self.id = id
         self.cik = cik
         self.symbol = symbol
+        self.sentiment = sentiment
         self.filingStart = date
         self.acquisition = acquisition
         self.engagement = engagement

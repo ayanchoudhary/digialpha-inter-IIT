@@ -56,6 +56,7 @@ type Company {
   name: String!
   cik: String!
   symbol: String!
+  sentiment: String
   filingStart: Date
   acquisition: [Acquisition]
   engagement: [Engagement]
