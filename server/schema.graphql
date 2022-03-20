@@ -1,32 +1,3 @@
-type Acquisition {
-  leads: Int
-  accounts: Int
-  conversion: Float
-  salesCycle: Int
-  cac: Float
-}
-
-type Engagement {
-  users: Int
-  penetration: Float
-  nps: String
-}
-
-type Revenue {
-  rr: Int
-  growth: Float
-  arpa: Float
-  acv: Int
-  churnRate: Float
-  accountDist: Int
-}
-
-type UnitEcon {
-  ltv: Int
-  payback: Int
-  ltvRatio: Float
-}
-
 enum Quarter {
   Q1
   Q2
@@ -39,19 +10,69 @@ type Date {
   year: Int!
 }
 
+type Acquisition {
+  leads: Int
+  accounts: Int
+  conversion: Float
+  salesCycle: Int
+  cac: Float
+  filingDate: Date
+}
+
+type Engagement {
+  users: Int
+  penetration: Float
+  nps: String
+  filingDate: Date
+}
+
+type Revenue {
+  rr: Int
+  growth: Float
+  arpa: Float
+  acv: Int
+  churnRate: Float
+  accountDist: Int
+  filingDate: Date
+}
+
+type UnitEcon {
+  ltv: Int
+  payback: Int
+  ltvRatio: Float
+  filingDate: Date
+}
+
+type SaaSGoals {
+  growth: Boolean
+  profitability: Boolean
+  maturity: Boolean
+  retention: Boolean
+  filingDate: Date
+}
+
 type Company {
   id: ID!
   name: String!
   cik: String!
-  sic: String!
   symbol: String!
   filingStart: Date
   acquisition: [Acquisition]
   engagement: [Engagement]
   revenue: [Revenue]
   unitEcon: [UnitEcon]
+  saasGoals: [SaaSGoals]
+}
+
+type SearchCompany {
+  id: ID!
+  name: String!
+  cik: String!
+  symbol: String!
+  filingStart: Date
 }
 
 type Query {
-  company(name: String, cik: String, sic: String, symbol: String, startDate: String, endDate: String): Company!
+  company(name: String, cik: String, symbol: String, startDate: String, endDate: String): Company!
+  searchCompany(search: String!): [SearchCompany]
 }

@@ -19,11 +19,46 @@ code {
   box-shadow: 0px 12px 24px -4px rgba(145, 158, 171, 0.12);
 }
 
-.hide-scrollbar  {
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
-  overflow: -moz-scrollbars-none;  /* Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  overflow: -moz-scrollbars-none; /* Firefox */
 }
-.hide-scrollbar::-webkit-scrollbar { 
-  display: none;  /* Safari and Chrome */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.search-logo {
+  background-color: white;
+  border-radius: 5px;
+  width: 100%;
+  input {
+    width: 100%;
+    outline: none;
+    border: none;
+  }
+}
+
+.search-bar-div {
+  margin-left: 25%;
+  margin-right: 25%;
+  width: 50%;
+}
+
+.suggestions {
+  width: 50%;
+  margin-top: 4rem;
+  margin-left: auto;
+  margin-right: auto;
+  .suggestion-row {
+    border-bottom: 1px solid #d7d7d7;
+    color: #b3b3b3;
+    font-size: 18px;
+    line-height: 33px;
+    &:hover {
+      color: black;
+      cursor: pointer;
+      font-weight: 700;
+    }
+  }
 }
