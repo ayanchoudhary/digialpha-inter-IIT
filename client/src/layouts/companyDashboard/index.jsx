@@ -31,6 +31,8 @@ const CompanyDashboard = () => {
   const [payback, setpayback] = useState([0]);
   const [rrDelta, setrrDelta] = useState(0);
   const [rr, setrr] = useState([0]);
+  const [growthDelta, setgrowthDelta] = useState(0);
+  const [growth, setgrowth] = useState([0]);
 
   const DUMMY_MINISTAT_DATA = [
     {
@@ -117,6 +119,8 @@ const CompanyDashboard = () => {
       setarpa(getArrGraphData(company.revenue, 'arpa', 'avgRevenue'));
       setrrDelta(getDelta(company.revenue, 'rr'));
       setrr(getArrGraphData(company.revenue, 'rr', 'recurringRevenue'));
+      setgrowthDelta(getDelta(company.revenue, 'growth'));
+      setgrowth(getArrGraphData(company.revenue, 'growth', 'growth'));
     }
     if (company.unitEcon) {
       setltvDelta(getDelta(company.unitEcon, 'ltv'));
@@ -148,9 +152,9 @@ const CompanyDashboard = () => {
         </div>
         <div className="Col2 flex-shrink-0">
           <div className="flex flex-col gap-8">
-            <ChartWrapper chartLabel="Active Users Stats" type={CHART_TYPES.LINE} data={users} val='users'/>
-            <ChartWrapper chartLabel="Quarterly Recurring Revenue" type={CHART_TYPES.BAR_HZ} data={rr} val='recurringRevenue' />
-            <ChartWrapper chartLabel="ARR Growth Rate" type={CHART_TYPES.BAR} />
+            <ChartWrapper chartLabel="Active Users Stats" type={CHART_TYPES.LINE} data={users} val='users' delta={usersDelta}/>
+            <ChartWrapper chartLabel="Quarterly Recurring Revenue" type={CHART_TYPES.BAR_HZ} data={rr} val='recurringRevenue' delta={rrDelta} />
+            <ChartWrapper chartLabel="ARR Growth Rate" type={CHART_TYPES.BAR} data={growth} val='growth' delta={growthDelta}/>
           </div>
         </div>
         <div className="Col3 flex-shrink-0">
