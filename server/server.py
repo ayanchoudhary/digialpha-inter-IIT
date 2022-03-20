@@ -63,7 +63,6 @@ def download_company_paramas():
         'Year', 
         'Quarter', 
         'CIK', 
-        'SIC', 
         'Symbol', 
         'Qualified Leads', 
         'New Accounts', 
