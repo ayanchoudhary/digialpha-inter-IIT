@@ -5,7 +5,7 @@ import TinyLineChart from '@layouts/charts/TinyLineChart';
 import TinyBarChart from '@layouts/charts/TinyBarChart';
 import { CHART_TYPES } from '@constants/variations';
 
-const MinStatCard = ({ label, value, delta, graphType, graphData }) => {
+const MinStatCard = ({ label, value, delta, graphType, graphData, val }) => {
   const isDeltaPositive = delta > 0;
   const chartColor = isDeltaPositive ? '#00BFA6' : '#FF5252';
   return (
@@ -20,7 +20,7 @@ const MinStatCard = ({ label, value, delta, graphType, graphData }) => {
       </div>
       <div className="flex items-center ml-2">
         {graphType === CHART_TYPES.LINE ? (
-          <TinyLineChart stroke={chartColor} />
+          <TinyLineChart stroke={chartColor} graphData={graphData} val={val}/>
         ) : (
           <TinyBarChart fill={chartColor} />
         )}

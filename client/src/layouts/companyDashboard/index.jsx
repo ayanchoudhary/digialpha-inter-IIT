@@ -5,7 +5,6 @@ import SideBarCard from '@layouts/companyDashboard/SideBarCard';
 import '@layouts/companyDashboard/index.scss';
 import ChartWrapper from '@layouts/charts/ChartWrapper';
 import { CHART_TYPES } from '@constants/variations';
-import LineComparison from '../charts/LineComparison';
 import RightBarCard from './RightBarCard';
 import useStore from './../../store';
 import { getDelta, getArrGraphData } from './../../utils/utils';
@@ -24,22 +23,30 @@ const CompanyDashboard = () => {
   const [ltv, setltv] = useState([0]);
   const [cacDelta, setcacDelta] = useState(0);
   const [cac, setcac] = useState([0]);
+  const [usersDelta, setusersDelta] = useState(0);
+  const [users, setusers] = useState([0]);
+  const [accountsDelta, setaccountsDelta] = useState(0);
+  const [accounts, setaccounts] = useState([0]);
+  const [paybackDelta, setpaybackDelta] = useState(0);
+  const [payback, setpayback] = useState([0]);
 
   const DUMMY_MINISTAT_DATA = [
     {
       label: 'Total Active Users',
-      value: '18,765',
-      delta: '2.6',
+      value: users[users.length-1],
+      delta: usersDelta,
       graphType: 'line',
-      graphData: [],
+      graphData: users,
+      val: 'users',
     },
-    { label: 'New Accounts', value: '18,765', delta: '-0.6', graphType: 'line', graphData: [] },
+    { label: 'New Accounts', value: accounts[accounts.length-1], delta: accountsDelta, graphType: 'line', graphData: accounts, val: 'accounts' },
     {
       label: 'Customer Acquisition Cost',
       value: cac[cac.length-1],
       delta: cacDelta,
       graphType: 'bar',
       graphData: cac,
+      val: 'cac',
     },
     {
       label: 'Lifetime Value',
@@ -47,8 +54,9 @@ const CompanyDashboard = () => {
       delta: ltvDelta,
       graphType: 'bar',
       graphData: ltv,
+      val: 'ltv',
     },
-    { label: 'CAC Payback', value: '18,765', delta: '2.6', graphType: 'line', graphData: [] },
+    { label: 'CAC Payback', value: payback[payback.length-1], delta: paybackDelta, graphType: 'line', graphData: payback, val: 'payback' },
   ];
 
   const DUMMY_MINISTAT_DATA2 = [
@@ -98,6 +106,8 @@ const CompanyDashboard = () => {
       setsalesCycle(getArrGraphData(company.acquisition, 'salesCycle', 'salesCycle'));
       setcacDelta(getDelta(company.acquisition, 'cac'));
       setcac(getArrGraphData(company.acquisition, 'cac', 'cac'));
+      setaccountsDelta(getDelta(company.acquisition, 'accounts'));
+      setaccounts(getArrGraphData(company.acquisition, 'accounts', 'accounts'));
     }
     if (company.revenue) {
       setaccountDist(getArrGraphData(company.revenue, 'accountDist', 'accountDist'));
@@ -107,6 +117,12 @@ const CompanyDashboard = () => {
     if (company.unitEcon) {
       setltvDelta(getDelta(company.unitEcon, 'ltv'));
       setltv(getArrGraphData(company.unitEcon, 'ltv', 'ltv'));
+      setpaybackDelta(getDelta(company.unitEcon, 'payback'));
+      setpayback(getArrGraphData(company.unitEcon, 'payback', 'payback'));
+    }
+    if (company.engagement) {
+      setusersDelta(getDelta(company.engagement, 'users'));
+      setusers(getArrGraphData(company.engagement, 'users', 'users'));
     }
   }, [company]);
 
