@@ -178,7 +178,9 @@ const CompanyDashboard = () => {
       <div className="mb-4 flex justify-between">
         <h1 className="font-bold text-3xl text-gray-700">{companyName}</h1>
       </div>
-      <Ticker/>
+      <div className="flex -mx-10 px-10 hide-scrollbar flex-nowrap overflow-x-auto">
+        <Ticker />
+      </div>
       <div className="flex -mx-10 px-10 hide-scrollbar flex-nowrap overflow-x-auto">
         {TopPanelData.map((stat) => (
           <MinStatCard {...stat} key={stat.label} />
