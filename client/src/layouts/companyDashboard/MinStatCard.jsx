@@ -20,9 +20,9 @@ const MinStatCard = ({ label, value, delta, graphType, graphData, val }) => {
       </div>
       <div className="flex items-center ml-2">
         {graphType === CHART_TYPES.LINE ? (
-          <TinyLineChart stroke={chartColor} graphData={graphData} val={val}/>
+          <TinyLineChart stroke={chartColor} graphData={graphData} val={val} />
         ) : (
-          <TinyBarChart fill={chartColor} />
+          <TinyBarChart fill={chartColor} graphData={graphData} val={val} />
         )}
       </div>
     </div>
