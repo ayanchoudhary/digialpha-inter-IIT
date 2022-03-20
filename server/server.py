@@ -19,7 +19,7 @@ app = Flask(__name__,
     static_folder=static_dir,
     static_url_path='')
 
-cors = CORS(app, resources={r"/graphql": {"origins": "*"}})
+cors = CORS(app)
 
 # Route to handle / on the server
 @app.route('/')
