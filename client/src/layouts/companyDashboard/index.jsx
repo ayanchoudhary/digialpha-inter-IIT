@@ -10,10 +10,12 @@ import useStore from './../../store';
 import { getDelta, getArrGraphData, getCumulativeSum, kFormatter } from './../../utils/utils';
 import { maxBy } from 'lodash';
 import Ticker from '../Ticker';
+import GlobalLoader from '../loaders/GlobalLoader';
 
 const CompanyDashboard = () => {
   const { companyName } = useParams();
   const company = useStore((state) => state.company);
+  const showGlobalLoader = useStore((state) => state.showGlobalLoader);
   const [leadsDelta, setleadsDelta] = useState(0);
   const [leads, setleads] = useState([0]);
   const [arpaDelta, setarpaDelta] = useState(0);
@@ -172,6 +174,8 @@ const CompanyDashboard = () => {
       setusers(getArrGraphData(company.engagement, 'users', 'users'));
     }
   }, [company]);
+
+  if (showGlobalLoader) return <GlobalLoader />;
 
   return (
     <div className="CompanyDashboard px-10 pb-11">

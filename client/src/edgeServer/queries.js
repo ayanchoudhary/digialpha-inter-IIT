@@ -6,7 +6,6 @@ export const GET_COMPANY_ALL_DETAILS_BY_NAME = gql`
       id
       name
       cik
-      sic
       symbol
       filingStart {
         quarter
