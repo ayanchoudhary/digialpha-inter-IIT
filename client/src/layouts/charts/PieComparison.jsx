@@ -17,15 +17,15 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#826AF9', '#00AB55'
 const PieComparison = ({ fullWidth }) => (
   <ResponsiveContainer width={fullWidth ? '100%' : 200} height={300}>
     <PieChart width={200} height={200}>
-      <Pie data={ltv} dataKey="value" cx="50%" cy="50%" innerRadius={55} outerRadius={70}>
-        {ltv.map((entry, index) => {
+      <Pie data={cac} dataKey="value" cx="50%" cy="50%" innerRadius={55} outerRadius={70}>
+        {cac.map((entry, index) => {
           if (index === 1) {
             return <Cell key={`cell-${index}`} fill="#919EAB" opacity={0.25} />; // make sure to map the index to the colour you want
           }
           return <Cell key={`cell-${index}`} fill="#B78103" />;
         })}
       </Pie>
-      <Pie data={cac} dataKey="value" cx="50%" cy="50%" innerRadius={75} outerRadius={90}>
+      <Pie data={ltv} dataKey="value" cx="50%" cy="50%" innerRadius={75} outerRadius={90}>
         {ltv.map((entry, index) => {
           if (index === 1) {
             return <Cell key={`cell-${index}`} fill="#919EAB" opacity={0.25} />; // make sure to map the index to the colour you want

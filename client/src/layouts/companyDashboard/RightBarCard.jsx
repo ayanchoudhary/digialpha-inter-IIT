@@ -1,66 +1,86 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { TrendUp, TrendDown } from '@assets/icons';
-import TinyLineChart from '@layouts/charts/TinyLineChart';
-import TinyPieChart from '@layouts/charts/TinyPieChart';
-import LineComparison from '../charts/LineComparison';
 import EmptyPieChart from '../charts/EmptyPieChart';
 import PieComparison from '../charts/PieComparison';
+import useStore from './../../store';
+import { useState, useEffect } from 'react';
+import { getArrGraphData, getDelta } from './../../utils/utils';
+import { useMemo } from 'react';
+import { getCumulativeSum } from '@utils/utils';
+import TinyLineChart from '@layouts/charts/TinyLineChart';
 
-const data = [
-  { name: 'Group A', value: 40 },
-  { name: 'Group B', value: 60 },
-];
+const RightBarCard = () => {
+  const company = useStore((state) => state.company);
+  const [penetrationDelta, setpenetrationDelta] = useState(0);
+  const [penetration, setpenetration] = useState([0]);
+  const [rrDelta, setrrDelta] = useState(0);
+  const [rr, setrr] = useState([0]);
+  const [churnRateDelta, setchurnRateDelta] = useState(0);
+  const [churnRate, setchurnRate] = useState([0]);
 
-const nps = [
-  { name: 'NPS Score', value: 8 },
-  { name: 'Left', value: 2 },
-];
+  useEffect(() => {
+    if (company.engagement) {
+      setpenetration(getArrGraphData(company.engagement, 'penetration', 'penetration'));
+      setpenetrationDelta(getDelta(company.engagement, 'penetration'));
+    }
+    if (company.revenue) {
+      setrrDelta(getDelta(company.revenue, 'rr'));
+      setrr(getArrGraphData(company.revenue, 'rr', 'mrr'));
+      setchurnRateDelta(getDelta(company.revenue, 'churnRate'));
+      setchurnRate(getArrGraphData(company.revenue, 'churnRate', 'churnRate'));
+    }
+  }, [company]);
 
-const RightBarCard = () => (
-  <div className="flex flex-col">
-    {/* <div
-      className="rightColCard flex flex-row items-center rounded-3xl flex-shrink-0 h-36 gap-8 m-6"
-      style={{ backgroundColor: '#005249', color: 'white' }}
-    >
-      <div style={{width: }}>
-        <EmptyPieChart data={data} innerRadius={20} outerRadius={25} fullWidth />
-      </div>
-      <div>
-        <div className="text-3xl font-bold text-white-800">NPS Score</div>
-        <div className="text-lg font-bold text-gray-300">Customer Satisfaction</div>
-      </div>
-      <div><img src="./../../assets/ic_person.svg" /></div>
-    </div> */}
+  const penetrationData = useMemo(() => {
+    const sum = getCumulativeSum(penetration, 'penetration') + 25;
+    return [{ value: sum, label: 'Total Penetration' }, { value: 100 - sum }];
+  }, [penetration]);
 
-    <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
-      <p className="font-bold text-sm">Market Penetration</p>
-      <div className="rightColCard flex flex-col items-center">
-        <div className="flex mt-6">
-          <TrendUp />
-          <p className="text-sm text-gray-500">
-            <span className="font-bold text-gray-900">2.6%</span> than last year
-          </p>
+  const mrrAndChurnRateData = useMemo(
+    () => rr.map((a, i) => ({ ...a, churnRate: churnRate[i]?.churnRate })),
+    [rr, churnRate],
+  );
+
+  return (
+    <div className="flex flex-col">
+      <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
+        <p className="font-bold text-sm">Market Penetration</p>
+        <div className="width-250 flex flex-col items-center">
+          <div className="flex mt-6 items-center">
+            {penetrationDelta > 0 ? <TrendUp /> : <TrendDown />}
+            <p className="text-sm text-gray-500 ml-2 m-0">
+              <span className="font-bold text-gray-900">{penetrationDelta}%</span> than last year
+            </p>
+          </div>
+          <EmptyPieChart data={penetrationData} innerRadius={60} outerRadius={80} />
         </div>
-        <EmptyPieChart data={data} innerRadius={60} outerRadius={80} />
       </div>
-    </div>
 
-    <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
-      <p className="font-bold text-sm">MRR Stats</p>
-      <p className="text-xs text-gray-500">(+43% New | -12% Churnned) than last year</p>
-      <div className="rightColCard flex flex-col items-center mt-4">
-        <LineComparison />
+      <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
+        <p className="font-bold text-sm">MRR Stats</p>
+        <p className="text-xs text-gray-500">
+          ({rrDelta}% New | {churnRateDelta}% Churnned) than last year
+        </p>
+        <div className="width-250 flex flex-col items-center mt-4 h-52">
+          <TinyLineChart
+            fullWidth
+            graphData={mrrAndChurnRateData}
+            val="mrr"
+            labelFormatter={(a, b) => `${b[0]?.value} (${b[0]?.payload?.date || ''})`}
+            formatter={(a, b, c) => [`${c?.payload?.churnRate}%`, 'Churn Rate']}
+          />
+        </div>
       </div>
-    </div>
 
-    <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
-      <p className="font-bold text-sm"> LTV/CAC Comparison</p>
-      <div className="rightColCard flex flex-col items-center">
-        <PieComparison />
+      <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
+        <p className="font-bold text-sm"> LTV/CAC Comparison</p>
+        <div className="width-250 flex flex-col items-center">
+          <PieComparison />
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default RightBarCard;

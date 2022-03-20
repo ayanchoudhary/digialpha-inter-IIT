@@ -9,26 +9,26 @@ import LargeBarChartHz from '@layouts/charts/LargeBarChartHz';
 
 const Option = Select.Option;
 
-const getChartFromType = (type) => {
+const getChartFromType = (type, data, val) => {
   switch (type) {
     case CHART_TYPES.LINE:
-      return <LargeLineChart />;
+      return <LargeLineChart data={data} val={val}/>;
     case CHART_TYPES.BAR:
-      return <LargeBarChart />;
+      return <LargeBarChart data={data} val={val} />;
     case CHART_TYPES.BAR_HZ:
-      return <LargeBarChartHz />;
+      return <LargeBarChartHz data={data} val={val} />;
     default:
       return;
   }
 };
 
-const ChartWrapper = ({ chartLabel, type }) => {
+const ChartWrapper = ({ chartLabel, type, data, val, delta }) => {
   return (
     <div className="bg-white soft-box-shadow rounded-3xl p-6 chartWrapper">
       <div className="flex justify-between items-start">
         <div>
           <h1 className="font-bold text-lg text-gray-900">{chartLabel}</h1>
-          <p className="text-gray-500 text-sm">+ 2.6% than last year</p>
+          <p className="text-gray-500 text-sm">{delta}% than last year</p>
         </div>
         <Select
           defaultValue="yearly"
@@ -41,7 +41,7 @@ const ChartWrapper = ({ chartLabel, type }) => {
           <Option value="quarterly">Quarterly</Option>
         </Select>
       </div>
-      <div>{getChartFromType(type)}</div>
+      <div>{getChartFromType(type, data, val)}</div>
     </div>
   );
 };
