@@ -16,6 +16,9 @@ const Ticker = () => {
       <div>
         <TickerCard label="Retention" value={false} />
       </div>
+      <div>
+        <TickerCard label="Sentiment" value={false} />
+      </div>
     </>
   );
 };

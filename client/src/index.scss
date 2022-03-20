@@ -27,3 +27,15 @@ code {
 .hide-scrollbar::-webkit-scrollbar { 
   display: none;  /* Safari and Chrome */
 }
+
+.search-logo {
+  background-color: white;
+  border-radius: 5px;
+  width: 50%;
+  input {
+    width: 100%;
+    outline: none;
+    border: none;
+  }
+
+}
