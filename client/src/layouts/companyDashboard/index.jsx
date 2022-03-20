@@ -202,7 +202,7 @@ const CompanyDashboard = () => {
           </div>
         </div>
         <div className="Col3 flex-shrink-0">
-          <RightBarCard></RightBarCard>
+          <RightBarCard />
         </div>
       </div>
     </div>

@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { TrendUp, TrendDown } from '@assets/icons';
-import TinyLineChart from '@layouts/charts/TinyLineChart';
-import TinyPieChart from '@layouts/charts/TinyPieChart';
 import LineComparison from '../charts/LineComparison';
 import EmptyPieChart from '../charts/EmptyPieChart';
 import PieComparison from '../charts/PieComparison';
 import useStore from './../../store';
 import { useState, useEffect } from 'react';
 import { getArrGraphData, getDelta } from './../../utils/utils';
+import { useMemo } from 'react';
+import { getCumulativeSum } from '@utils/utils';
 
 const RightBarCard = () => {
   const company = useStore((state) => state.company);
@@ -32,14 +32,21 @@ const RightBarCard = () => {
     }
   }, [company]);
 
+  const penetrationData = useMemo(
+    () => getCumulativeSum(penetration, 'penetration'),
+    [penetration],
+  );
+
+  console.log('penetrationData', penetrationData);
+
   return (
     <div className="flex flex-col">
       <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
         <p className="font-bold text-sm">Market Penetration</p>
         <div className="width-250 flex flex-col items-center">
-          <div className="flex mt-6">
+          <div className="flex mt-6 items-center">
             {penetrationDelta > 0 ? <TrendUp /> : <TrendDown />}
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 ml-2 m-0">
               <span className="font-bold text-gray-900">{penetrationDelta}%</span> than last year
             </p>
           </div>
