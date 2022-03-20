@@ -1,40 +1,55 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts';
+import { Label } from 'recharts';
 
-const ltv = [
-  { name: 'LTV', value: 75 },
-  { name: 'Left', value: 25 },
-];
-
-const cac = [
-  { name: 'cac', value: 50 },
-  { name: 'Left', value: 50 },
-];
-
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#826AF9', '#00AB55'];
-
-const PieComparison = ({ fullWidth }) => (
+const PieComparison = ({ fullWidth, val1, val2, label, legendPayload }) => (
   <ResponsiveContainer width={fullWidth ? '100%' : 200} height={300}>
     <PieChart width={200} height={200}>
-      <Pie data={cac} dataKey="value" cx="50%" cy="50%" innerRadius={55} outerRadius={70}>
-        {cac.map((entry, index) => {
+      <Pie
+        data={val1}
+        dataKey="value"
+        cx="50%"
+        cy="50%"
+        innerRadius={55}
+        outerRadius={70}
+        startAngle={90}
+        endAngle={450}
+      >
+        {val1.map((entry, index) => {
           if (index === 1) {
             return <Cell key={`cell-${index}`} fill="#919EAB" opacity={0.25} />; // make sure to map the index to the colour you want
           }
           return <Cell key={`cell-${index}`} fill="#B78103" />;
         })}
+        <Label
+          value={label}
+          position="center"
+          fill="#212B36"
+          style={{
+            fontSize: '30px',
+            fontWeight: 'bold',
+          }}
+        />
       </Pie>
-      <Pie data={ltv} dataKey="value" cx="50%" cy="50%" innerRadius={75} outerRadius={90}>
-        {ltv.map((entry, index) => {
+      <Pie
+        data={val2}
+        dataKey="value"
+        cx="50%"
+        cy="50%"
+        innerRadius={75}
+        outerRadius={90}
+        startAngle={90}
+        endAngle={450}
+      >
+        {val2.map((entry, index) => {
           if (index === 1) {
             return <Cell key={`cell-${index}`} fill="#919EAB" opacity={0.25} />; // make sure to map the index to the colour you want
           }
           return <Cell key={`cell-${index}`} fill="#007B55" />;
         })}
       </Pie>
-      <Legend />
-      <Tooltip />
+      <Legend payload={legendPayload} />
     </PieChart>
   </ResponsiveContainer>
 );

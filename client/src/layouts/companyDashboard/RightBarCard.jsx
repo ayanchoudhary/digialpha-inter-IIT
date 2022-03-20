@@ -18,8 +18,16 @@ const RightBarCard = () => {
   const [rr, setrr] = useState([0]);
   const [churnRateDelta, setchurnRateDelta] = useState(0);
   const [churnRate, setchurnRate] = useState([0]);
+  const [cac, setcac] = useState([0]);
+  const [ltv, setltv] = useState([0]);
 
   useEffect(() => {
+    if (company.acquisition) {
+      setcac(getArrGraphData(company.acquisition, 'cac', 'cac'));
+    }
+    if (company.unitEcon) {
+      setltv(getArrGraphData(company.unitEcon, 'ltv', 'ltv'));
+    }
     if (company.engagement) {
       setpenetration(getArrGraphData(company.engagement, 'penetration', 'penetration'));
       setpenetrationDelta(getDelta(company.engagement, 'penetration'));
@@ -40,6 +48,13 @@ const RightBarCard = () => {
   const mrrAndChurnRateData = useMemo(
     () => rr.map((a, i) => ({ ...a, churnRate: churnRate[i]?.churnRate })),
     [rr, churnRate],
+  );
+
+  const cumulativeCac = useMemo(() => getCumulativeSum(cac, 'cac', false), [cac]);
+  const cumulativeLtv = useMemo(() => getCumulativeSum(ltv, 'ltv', false), [ltv]);
+  const ltvCacRatio = useMemo(
+    () => (cumulativeCac ? cumulativeLtv / cumulativeCac : 0).toPrecision(2),
+    [cumulativeCac, cumulativeLtv],
   );
 
   return (
@@ -74,9 +89,23 @@ const RightBarCard = () => {
       </div>
 
       <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
-        <p className="font-bold text-sm"> LTV/CAC Comparison</p>
+        <p className="font-bold text-sm">LTV/CAC Comparison</p>
         <div className="width-250 flex flex-col items-center">
-          <PieComparison />
+          <PieComparison
+            val1={[
+              { name: 'CAC', value: cumulativeCac },
+              { name: 'Left', value: cumulativeLtv + cumulativeCac },
+            ]}
+            val2={[
+              { name: 'LTV', value: cumulativeLtv },
+              { name: 'Left', value: cumulativeLtv + cumulativeCac },
+            ]}
+            label={`${ltvCacRatio * 100}%`}
+            legendPayload={[
+              { value: `Total LTV: ${cumulativeLtv}`, color: '#007B55' },
+              { value: `Total CAC: ${cumulativeCac}`, color: '#B78103' },
+            ]}
+          />
         </div>
       </div>
     </div>

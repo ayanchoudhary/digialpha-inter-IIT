@@ -25,8 +25,10 @@ export const getArrGraphData = (arr, key, name) => {
 const getKeyNameFromFillingData = (filingDate) =>
   filingDate ? `${filingDate.quarter}-${filingDate.year}` : '';
 
-export const getCumulativeSum = (arr, key) =>
-  kFormatter(reduce(arr, (sum, curr) => sum + curr[`${key}`], 0) || 0);
+export const getCumulativeSum = (arr, key, kFormat = true) => {
+  const reducedSum = reduce(arr, (sum, curr) => sum + curr[`${key}`], 0) || 0;
+  return kFormat ? kFormatter(reducedSum) : reducedSum;
+};
 
 export const kFormatter = (num) =>
   Math.abs(num) > 999

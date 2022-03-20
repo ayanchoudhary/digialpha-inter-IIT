@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Select } from 'antd';
-import { ArrowDown } from '@assets/icons';
+// import { Select } from 'antd';
+// import { ArrowDown } from '@assets/icons';
 import LargeLineChart from '@layouts/charts/LargeLineChart';
 import { CHART_TYPES } from '@constants/variations';
 import LargeBarChart from '@layouts/charts/LargeBarChart';
 import LargeBarChartHz from '@layouts/charts/LargeBarChartHz';
 
-const Option = Select.Option;
+// const Option = Select.Option;
 
 const getChartFromType = (type, data, val) => {
   switch (type) {
@@ -30,7 +30,7 @@ const ChartWrapper = ({ chartLabel, type, data, val, delta }) => {
           <h1 className="font-bold text-lg text-gray-900">{chartLabel}</h1>
           <p className="text-gray-500 text-sm">{delta}% than last year</p>
         </div>
-        <Select
+        {/* <Select
           defaultValue="yearly"
           className="bg-gray-100 rounded-lg"
           bordered={false}
@@ -39,7 +39,7 @@ const ChartWrapper = ({ chartLabel, type, data, val, delta }) => {
         >
           <Option value="yearly">Yearly</Option>
           <Option value="quarterly">Quarterly</Option>
-        </Select>
+        </Select> */}
       </div>
       <div>{getChartFromType(type, data, val)}</div>
     </div>
