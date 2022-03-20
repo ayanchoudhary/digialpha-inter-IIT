@@ -3,8 +3,9 @@ import React from 'react';
 import { TrendUp, TrendDown } from '@assets/icons';
 import TinyLineChart from '@layouts/charts/TinyLineChart';
 import TinyPieChart from '@layouts/charts/TinyPieChart';
+import { CHART_TYPES } from '@constants/variations';
 
-const SideBarCard = ({ label, value, delta, graphType, graphData, bgcolor, color }) => {
+const SideBarCard = ({ label, value, delta, graphType, graphData, bgcolor, color, val }) => {
   const isDeltaPositive = delta > 0;
 
   return (
@@ -27,11 +28,11 @@ const SideBarCard = ({ label, value, delta, graphType, graphData, bgcolor, color
           </div>
         )}
       </div>
-      <div style={{ height: 200 }}>
-        {graphType === 'line' ? (
-          <TinyLineChart stroke={color} fullWidth />
+      <div style={{ height: graphType === CHART_TYPES.LINE ? 200 : 300 }} className="width-250">
+        {graphType === CHART_TYPES.LINE ? (
+          <TinyLineChart stroke={color} fullWidth graphData={graphData} val={val} />
         ) : (
-          <TinyPieChart fullWidth />
+          <TinyPieChart fullWidth graphData={graphData} val={val} />
         )}
       </div>
     </div>
