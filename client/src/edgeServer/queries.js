@@ -66,3 +66,19 @@ export const GET_COMPANY_ALL_DETAILS_BY_NAME = gql`
     }
   }
 `;
+
+export const GET_SEARCH_COMPANY = gql`
+  query searchCompany($search: String!) {
+    searchCompany(search: $search) {
+      id
+      name
+      cik
+      sic
+      symbol
+      filingStart {
+        quarter
+        year
+      }
+    }
+  }
+`;
