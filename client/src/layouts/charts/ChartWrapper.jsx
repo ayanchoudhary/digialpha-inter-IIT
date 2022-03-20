@@ -12,7 +12,7 @@ const Option = Select.Option;
 const getChartFromType = (type, data, val) => {
   switch (type) {
     case CHART_TYPES.LINE:
-      return <LargeLineChart data={data} val={val}/>;
+      return <LargeLineChart data={data} val={val} />;
     case CHART_TYPES.BAR:
       return <LargeBarChart data={data} val={val} />;
     case CHART_TYPES.BAR_HZ:

@@ -11,6 +11,7 @@ import { getDelta, getArrGraphData, getCumulativeSum, kFormatter } from './../..
 import { maxBy } from 'lodash';
 import Ticker from '../Ticker';
 import GlobalLoader from '../loaders/GlobalLoader';
+import { COMPANY_DATA_CSV_PATH } from '@constants/config';
 
 const CompanyDashboard = () => {
   const { companyName } = useParams();
@@ -175,12 +176,23 @@ const CompanyDashboard = () => {
     }
   }, [company]);
 
+  const handleDownloadCSV = () => {
+    if (!company.id) return;
+    window.open(`${COMPANY_DATA_CSV_PATH}${company.id}`);
+  };
+
   if (showGlobalLoader) return <GlobalLoader />;
 
   return (
-    <div className="CompanyDashboard px-10 pb-11">
-      <div className="mb-4 flex justify-between">
+    <div className="CompanyDashboard px-10 pb-11 mx-auto" style={{ maxWidth: '1440px' }}>
+      <div className="mb-4 flex justify-between items-center">
         <h1 className="font-bold text-3xl text-gray-700">{companyName}</h1>
+        <div
+          className="px-3 py-1.5 bg-green-700 text-white text-base font-semibold rounded-md cursor-pointer hover:bg-green-800"
+          onClick={handleDownloadCSV}
+        >
+          Export as CSV
+        </div>
       </div>
       <div className="flex -mx-10 px-10 hide-scrollbar flex-nowrap overflow-x-auto">
         <Ticker />

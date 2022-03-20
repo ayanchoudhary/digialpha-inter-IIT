@@ -33,7 +33,7 @@ const RightBarCard = () => {
   }, [company]);
 
   const penetrationData = useMemo(() => {
-    const sum = getCumulativeSum(penetration, 'penetration') + 25;
+    const sum = getCumulativeSum(penetration, 'penetration');
     return [{ value: sum, label: 'Total Penetration' }, { value: 100 - sum }];
   }, [penetration]);
 
