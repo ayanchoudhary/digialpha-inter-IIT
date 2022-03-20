@@ -1,21 +1,15 @@
 /* eslint-disable react/prop-types */
+import { truncateDatapoints } from '@utils/utils';
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-
-const data = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
-  { name: 'Group D', value: 200 },
-];
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#826AF9', '#00AB55'];
 
 const TinyPieChart = ({ fullWidth, graphData, val }) => (
-  <ResponsiveContainer width={fullWidth ? '100%' : 120} height={200}>
+  <ResponsiveContainer width={fullWidth ? '100%' : 120} height={300}>
     <PieChart width={120} height={120}>
-      <Pie data={graphData} dataKey={val} outerRadius={70}>
-        {data.map((entry, index) => (
+      <Pie data={truncateDatapoints(graphData, val)} dataKey={val} nameKey="date" outerRadius={70}>
+        {truncateDatapoints(graphData).map((entry, index) => (
           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
         ))}
       </Pie>

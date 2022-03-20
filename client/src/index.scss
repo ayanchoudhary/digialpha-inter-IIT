@@ -24,6 +24,6 @@ code {
   scrollbar-width: none;  /* Firefox */
   overflow: -moz-scrollbars-none;  /* Firefox */
 }
-.hide-scrollbar ::-webkit-scrollbar { 
+.hide-scrollbar::-webkit-scrollbar { 
   display: none;  /* Safari and Chrome */
 }

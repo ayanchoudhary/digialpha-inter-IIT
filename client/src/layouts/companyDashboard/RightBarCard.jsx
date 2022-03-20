@@ -10,16 +10,6 @@ import useStore from './../../store';
 import { useState, useEffect } from 'react';
 import { getArrGraphData, getDelta } from './../../utils/utils';
 
-const data = [
-  { name: 'Group A', value: 40 },
-  { name: 'Group B', value: 60 },
-];
-
-const nps = [
-  { name: 'NPS Score', value: 8 },
-  { name: 'Left', value: 2 },
-];
-
 const RightBarCard = () => {
   const company = useStore((state) => state.company);
   const [penetrationDelta, setpenetrationDelta] = useState(0);
@@ -46,7 +36,7 @@ const RightBarCard = () => {
     <div className="flex flex-col">
       <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
         <p className="font-bold text-sm">Market Penetration</p>
-        <div className="rightColCard flex flex-col items-center">
+        <div className="width-250 flex flex-col items-center">
           <div className="flex mt-6">
             {penetrationDelta > 0 ? <TrendUp /> : <TrendDown />}
             <p className="text-sm text-gray-500">
@@ -62,14 +52,14 @@ const RightBarCard = () => {
         <p className="text-xs text-gray-500">
           ({rrDelta}% New | {churnRateDelta}% Churnned) than last year
         </p>
-        <div className="rightColCard flex flex-col items-center mt-4">
+        <div className="width-250 flex flex-col items-center mt-4">
           <LineComparison data1={rr} data2={churnRate} val1="MRR" val2="churnRate" />
         </div>
       </div>
 
       <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
         <p className="font-bold text-sm"> LTV/CAC Comparison</p>
-        <div className="rightColCard flex flex-col items-center">
+        <div className="width-250 flex flex-col items-center">
           <PieComparison />
         </div>
       </div>
