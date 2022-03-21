@@ -184,7 +184,7 @@ const CompanyDashboard = () => {
   if (showGlobalLoader) return <GlobalLoader />;
 
   return (
-    <div className="CompanyDashboard px-10 pb-11 mx-auto" style={{ maxWidth: '1440px' }}>
+    <div className="CompanyDashboard px-10 pb-11">
       <div className="mb-4 flex justify-between items-center">
         <h1 className="font-bold text-3xl text-gray-700">{companyName}</h1>
         <div
@@ -194,10 +194,10 @@ const CompanyDashboard = () => {
           Export as CSV
         </div>
       </div>
-      <div className="flex -mx-10 px-10 hide-scrollbar flex-nowrap overflow-x-auto">
+      <div className="flex -mx-10 px-10 hide-scrollbar flex-nowrap overflow-x-auto justify-center">
         <Ticker />
       </div>
-      <div className="flex -mx-10 px-10 hide-scrollbar flex-nowrap overflow-x-auto">
+      <div className="flex -mx-10 px-10 hide-scrollbar flex-nowrap overflow-x-auto justify-center">
         {TopPanelData.map((stat) => (
           <MinStatCard {...stat} key={stat.label} />
         ))}
