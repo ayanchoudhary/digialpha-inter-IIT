@@ -29,7 +29,7 @@ import PropTypes from 'prop-types';
 //   },
 // ];
 
-const LineComparison = ({ data1, data2, val1, val2 }) => {
+const LineComparison = ({ data1, data2, val1, val2, color1, color2 }) => {
   let data = [];
   for (let i = 0; i < data1.length; i++) {
     let obj = {};
@@ -57,8 +57,8 @@ const LineComparison = ({ data1, data2, val1, val2 }) => {
         <XAxis dataKey="name" axisLine={false} />
         <YAxis axisLine={false} />
         <Tooltip />
-        <Line type="monotone" dataKey="MRR" stroke="#00AB55" strokeWidth={2} dot={false} />
-        <Line type="monotone" dataKey="churnRate" stroke="#FF6C40" strokeWidth={2} dot={false} />
+        <Line type="monotone" dataKey={val1} stroke={color1} strokeWidth={2} dot={false} />
+        <Line type="monotone" dataKey={val2} stroke={color2} strokeWidth={2} dot={false} />
       </LineChart>
     </div>
   );
@@ -69,6 +69,8 @@ LineComparison.propTypes = {
   data2: PropTypes.array,
   val1: PropTypes.string,
   val2: PropTypes.string,
+  color1: PropTypes.string,
+  color2: PropTypes.string,
 };
 
 export default LineComparison;
