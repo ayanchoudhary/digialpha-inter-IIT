@@ -19,3 +19,46 @@
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover;
 }
+
+.solution {
+  margin-top: -12vh;
+  width: 100%;
+  height: 70vh;
+  background-image: url('../../assets/Rectangle2.png');
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover;
+}
+
+.graph {
+  // height: 100vh;
+  padding-top: 8%;
+}
+
+.fontClass {
+  font-family: 'Public Sans';
+  font-style: normal;
+}
+
+.fontNunito {
+  font-family: 'Nunito Sans';
+  font-style: normal;
+}
+
+.landing-main {
+  line-height: 105px;
+}
+
+.sol {
+  padding: 0 15%;
+}
+
+.problemsfaced {
+  width: 100%;
+  height: 50vh;
+  background-image: url('../../assets/Rectangle3.png');
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover;
+  // padding: 0 15%;
+}

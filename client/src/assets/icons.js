@@ -58,3 +58,17 @@ export const SearchIcon = () => (
     />
   </svg>
 );
+
+export const UnderlineB = () => {
+  return (
+    <svg width="120" height="5" viewBox="0 0 120 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="120" height="5" rx="2.5" fill="#393939" />
+    </svg>
+  );
+};
+
+export const UnderlineG = () => (
+  <svg width="120" height="6" viewBox="0 0 120 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect y="0.388184" width="120" height="5" rx="2.5" fill="#007B55" />
+  </svg>
+);
