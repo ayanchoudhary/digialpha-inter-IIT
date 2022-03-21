@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import useStore from '../store';
-import test from './../assets/logo.png';
 import { SearchIcon } from './../assets/icons';
 import { useGetSearchCompany } from '../edgeServer/getSearchCompanies';
 import { useLazyQuery } from '@apollo/client';
@@ -33,7 +32,6 @@ const Landing = () => {
   }, [data]);
 
   useEffect(() => {
-    console.log(searchCompanies);
   }, [searchCompanies]);
 
   useEffect(() => {
@@ -45,9 +43,6 @@ const Landing = () => {
   return (
     <div className="body flex flex-col items-center align-middle overflow-y-visible fontClass text-wide">
       <div className="background">
-        <div className="logo">
-          <img src={test} className="p-6" />
-        </div>
         <div className="landing-text text-center p-8 my-20 text-white">
           <div className="text-7xl font-semibold landing-main">
             Find the right information to <br /> fuel your business growth
