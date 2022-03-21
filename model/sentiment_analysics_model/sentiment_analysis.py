@@ -4,6 +4,7 @@ import os
 import re
 import pandas as pd
 
+import json
 import nltk
 nltk.download('punkt')
 from nltk.tokenize import sent_tokenize
@@ -141,9 +142,9 @@ def get_all_sentiments(paths, generator):
         sentiments.append(sentiment)
     return sentiments
 
-def create_df(generator):
+def create_json(generator):
     """
-    Creates a dataframe consisting of the filings and their sentiments. 
+    Creates a json object consisting of the companies and their sentiments. 
     All arguments take strings as input
     generator: the generator object used for the model pipeline
     """
@@ -151,20 +152,28 @@ def create_df(generator):
     cleaned_paths = clean_all_files()
     sentiments = get_all_sentiments(cleaned_paths, generator)
     companies = []
-    filing_types = []
-    filings = []
     for doc_file in cleaned_paths:
         file_path = os.path.normpath(doc_file)
         parts = file_path.split(os.sep)
         companies.append(parts[2])
-        filing_types.append(parts[3])
-        filings.append(parts[4])
     main_data = {'Company': companies,
-                 'Filing Type': filing_types,
-                 'Filing': filings,
                  'Sentiment': sentiments}
-    main_df = pd.DataFrame(main_data)
-    main_df.to_csv('sentiments.csv', index=False)
+    sentiment_dict = {}
+    for i in range(len(main_data['Company'])):
+        comp = main_data['Company'][i]
+        st = main_data['Sentiment'][i]
+        val = -1 if st == "negative" else 1
+        if comp in sentiment_dict.keys():
+            sentiment_dict[comp] += val
+        else:
+            sentiment_dict[comp] = val
+
+    for k, v in sentiment_dict.items():
+        st_val = "negative" if v < 0 else "positive"
+        sentiment_dict[k] = st_val
+
+    with open('sentiments.json') as f:
+        json.dumps(sentiment_dict, f)
 
 if __name__ == "__main__":
 
@@ -173,5 +182,5 @@ if __name__ == "__main__":
     model = AutoModelForSequenceClassification.from_pretrained("ProsusAI/finbert")
     generator = pipeline(task="sentiment-analysis", model=model, tokenizer=tokenizer)
 
-    create_df(generator)
+    create_json(generator)
 
