@@ -184,7 +184,7 @@ const CompanyDashboard = () => {
   if (showGlobalLoader) return <GlobalLoader />;
 
   return (
-    <div className="CompanyDashboard px-10 pb-11 mx-auto" style={{ maxWidth: '1440px' }}>
+    <div className="CompanyDashboard px-10 pb-11">
       <div className="mb-4 flex justify-between items-center">
         <h1 className="font-bold text-3xl text-gray-700">{companyName}</h1>
         <div

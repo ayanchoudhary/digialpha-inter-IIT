@@ -5,7 +5,9 @@ import { last } from 'lodash';
 
 const Ticker = () => {
   const { saasGoals } = useStore((state) => state.company);
+  const { sentiment } = useStore((state) => state.company);
   const lastSaasGoalStatus = last(saasGoals);
+  const lastSentiment = last(sentiment);
 
   if (!lastSaasGoalStatus) return null;
 
@@ -24,6 +26,9 @@ const Ticker = () => {
       </div>
       <div>
         <TickerCard label="Retention" value={retention} />
+      </div>
+      <div>
+        <TickerCard label="Sentiment" value={lastSentiment} />
       </div>
     </>
   );
