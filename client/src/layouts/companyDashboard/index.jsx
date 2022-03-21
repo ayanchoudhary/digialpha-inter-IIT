@@ -194,10 +194,10 @@ const CompanyDashboard = () => {
           Export as CSV
         </div>
       </div>
-      <div className="flex -mx-10 px-10 hide-scrollbar flex-nowrap overflow-x-auto justify-center">
+      <div className="flex -mx-10 px-10 hide-scrollbar flex-nowrap overflow-x-auto">
         <Ticker />
       </div>
-      <div className="flex -mx-10 px-10 hide-scrollbar flex-nowrap overflow-x-auto justify-center">
+      <div className="flex -mx-10 px-10 hide-scrollbar flex-nowrap overflow-x-auto">
         {TopPanelData.map((stat) => (
           <MinStatCard {...stat} key={stat.label} />
         ))}
