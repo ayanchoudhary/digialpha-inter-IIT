@@ -9,6 +9,8 @@ import { getArrGraphData, getDelta } from './../../utils/utils';
 import { useMemo } from 'react';
 import { getCumulativeSum, preciseRoundOff } from '@utils/utils';
 import TinyLineChart from '@layouts/charts/TinyLineChart';
+import { Person } from './../../assets/icons';
+import { last } from 'lodash';
 
 const RightBarCard = () => {
   const company = useStore((state) => state.company);
@@ -20,6 +22,7 @@ const RightBarCard = () => {
   const [churnRate, setchurnRate] = useState([0]);
   const [cac, setcac] = useState([0]);
   const [ltv, setltv] = useState([0]);
+  let [nps, setnps] = useState([0]);
 
   useEffect(() => {
     if (company.acquisition) {
@@ -31,6 +34,11 @@ const RightBarCard = () => {
     if (company.engagement) {
       setpenetration(getArrGraphData(company.engagement, 'penetration', 'penetration'));
       setpenetrationDelta(getDelta(company.engagement, 'penetration'));
+      setnps(getArrGraphData(company.engagement, 'nps', 'nps'));
+      // nps = last(nps)
+      // nps[0].value = 'nps'
+      // nps['value'] = 'nps'
+      console.log(nps);
     }
     if (company.revenue) {
       setrrDelta(getDelta(company.revenue, 'rr'));
@@ -44,6 +52,11 @@ const RightBarCard = () => {
     const sum = getCumulativeSum(penetration, 'penetration');
     return [{ value: sum, label: 'Total Penetration' }, { value: 100 - sum }];
   }, [penetration]);
+
+  const npsValue = useMemo(() => {
+    const sum = last(nps)['nps']
+    return [{ value: sum, label: 'NPS Score' }, { value: 10 - sum }];
+  }, [nps]);
 
   const mrrAndChurnRateData = useMemo(
     () => rr.map((a, i) => ({ ...a, churnRate: churnRate[i]?.churnRate })),
@@ -59,6 +72,16 @@ const RightBarCard = () => {
 
   return (
     <div className="flex flex-col">
+      <div className="nps flex flex-row items-center rounded-xl p-2" style={{ backgroundColor: '#005249'}}>
+        <div className='h-20'><EmptyPieChart height={80} width={80} data={npsValue} innerRadius={30} outerRadius={35} per={false}/></div>
+        <div className="flex flex-col fontClass font-bold ml-2">
+          <div className='text-white text-2xl'>NPS Score</div>
+          <div className='text-gray-300 text-sm'>Customer Satisfaction</div>
+        </div>
+        <div>
+          <Person />
+        </div>
+      </div>
       <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
         <p className="font-bold text-sm">Market Penetration</p>
         <div className="width-250 flex flex-col items-center">
@@ -69,7 +92,7 @@ const RightBarCard = () => {
               than last year
             </p>
           </div>
-          <EmptyPieChart data={penetrationData} innerRadius={60} outerRadius={80} />
+          <EmptyPieChart data={penetrationData} innerRadius={60} outerRadius={80} per={true}/>
         </div>
       </div>
 
