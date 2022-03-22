@@ -7,7 +7,13 @@ import ChartWrapper from '@layouts/charts/ChartWrapper';
 import { CHART_TYPES } from '@constants/variations';
 import RightBarCard from './RightBarCard';
 import useStore from './../../store';
-import { getDelta, getArrGraphData, getCumulativeSum, kFormatter } from './../../utils/utils';
+import {
+  getDelta,
+  getArrGraphData,
+  getCumulativeSum,
+  kFormatter,
+  preciseRoundOff,
+} from './../../utils/utils';
 import { maxBy } from 'lodash';
 import Ticker from '../Ticker';
 import GlobalLoader from '../loaders/GlobalLoader';
@@ -44,40 +50,40 @@ const CompanyDashboard = () => {
     () => [
       {
         label: 'Total Active Users',
-        value: getCumulativeSum(users, 'users'),
-        delta: usersDelta,
+        value: preciseRoundOff(getCumulativeSum(users, 'users')),
+        delta: preciseRoundOff(usersDelta),
         graphType: CHART_TYPES.LINE,
         graphData: users,
         val: 'users',
       },
       {
         label: 'New Accounts',
-        value: getCumulativeSum(accounts, 'accounts'),
-        delta: accountsDelta,
+        value: preciseRoundOff(getCumulativeSum(accounts, 'accounts')),
+        delta: preciseRoundOff(accountsDelta),
         graphType: CHART_TYPES.LINE,
         graphData: accounts,
         val: 'accounts',
       },
       {
         label: 'Customer Acquisition Cost',
-        value: `€ ${getCumulativeSum(cac, 'cac')}`,
-        delta: cacDelta,
+        value: `€ ${preciseRoundOff(getCumulativeSum(cac, 'cac'))}`,
+        delta: preciseRoundOff(cacDelta),
         graphType: CHART_TYPES.BAR,
         graphData: cac,
         val: 'cac',
       },
       {
         label: 'Lifetime Value',
-        value: `€ ${getCumulativeSum(ltv, 'ltv')}`,
-        delta: ltvDelta,
+        value: `€ ${preciseRoundOff(getCumulativeSum(ltv, 'ltv'))}`,
+        delta: preciseRoundOff(ltvDelta),
         graphType: CHART_TYPES.BAR,
         graphData: ltv,
         val: 'ltv',
       },
       {
         label: 'CAC Payback',
-        value: `€ ${getCumulativeSum(payback, 'payback')}`,
-        delta: paybackDelta,
+        value: `€ ${preciseRoundOff(getCumulativeSum(payback, 'payback'))}`,
+        delta: preciseRoundOff(paybackDelta),
         graphType: CHART_TYPES.LINE,
         graphData: payback,
         val: 'payback',
@@ -101,8 +107,8 @@ const CompanyDashboard = () => {
     () => [
       {
         label: 'Qualified Leads',
-        value: getCumulativeSum(leads, 'leads'),
-        delta: leadsDelta,
+        value: preciseRoundOff(getCumulativeSum(leads, 'leads')),
+        delta: preciseRoundOff(leadsDelta),
         graphType: CHART_TYPES.LINE,
         graphData: leads,
         bgcolor: '#E4F8EA',
@@ -111,8 +117,8 @@ const CompanyDashboard = () => {
       },
       {
         label: 'Sales Cycle',
-        value: `${maxBy(salesCycle, 'salesCycle')?.salesCycle || 0} days`,
-        delta: salesCycleDelta,
+        value: `${preciseRoundOff(maxBy(salesCycle, 'salesCycle')?.salesCycle || 0)} days`,
+        delta: preciseRoundOff(salesCycleDelta),
         graphType: CHART_TYPES.LINE,
         graphData: salesCycle,
         bgcolor: '#FFF7CD',
@@ -121,8 +127,8 @@ const CompanyDashboard = () => {
       },
       {
         label: 'Average Revenue',
-        value: `€ ${kFormatter(maxBy(arpa, 'avgRevenue')?.avgRevenue) || 0}`,
-        delta: arpaDelta,
+        value: `€ ${preciseRoundOff(kFormatter(maxBy(arpa, 'avgRevenue')?.avgRevenue) || 0)}`,
+        delta: preciseRoundOff(arpaDelta),
         graphType: CHART_TYPES.LINE,
         graphData: arpa,
         bgcolor: '#E2FDFE',
@@ -131,8 +137,8 @@ const CompanyDashboard = () => {
       },
       {
         label: 'Conversion Rates',
-        value: `${maxBy(conversion, 'conversion')?.conversion || 0}%`,
-        delta: conversionDelta,
+        value: `${preciseRoundOff(maxBy(conversion, 'conversion')?.conversion || 0)}%`,
+        delta: preciseRoundOff(conversionDelta),
         graphType: CHART_TYPES.LINE,
         graphData: conversion,
         bgcolor: '#C8FACD',
@@ -215,21 +221,21 @@ const CompanyDashboard = () => {
               type={CHART_TYPES.LINE}
               data={users}
               val="users"
-              delta={usersDelta}
+              delta={preciseRoundOff(usersDelta)}
             />
             <ChartWrapper
               chartLabel="Quarterly Recurring Revenue"
               type={CHART_TYPES.BAR_HZ}
               data={rr}
               val="recurringRevenue"
-              delta={rrDelta}
+              delta={preciseRoundOff(rrDelta)}
             />
             <ChartWrapper
               chartLabel="ARR Growth Rate"
               type={CHART_TYPES.BAR}
               data={growth}
               val="growth"
-              delta={growthDelta}
+              delta={preciseRoundOff(growthDelta)}
             />
           </div>
         </div>

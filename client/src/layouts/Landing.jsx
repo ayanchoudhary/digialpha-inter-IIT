@@ -1,44 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import useStore from '../store';
-import { SearchIcon } from './../assets/icons';
-import { useGetSearchCompany } from '../edgeServer/getSearchCompanies';
-import { useLazyQuery } from '@apollo/client';
-import { GET_SEARCH_COMPANY } from '@edgeServer/queries';
-import { Link } from 'react-router-dom';
+import React, { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { UnderlineB } from './../assets/icons';
 import flowchart from './../assets/flowchart.png';
 import Client from './landingTemplate/Client';
 import Server from './landingTemplate/Server';
 import ComputeEngine from './landingTemplate/ComputeEngine';
+import CompanySearch from '@layouts/companySearch/CompanySearch';
 
 const Landing = () => {
-  const [suggestions, setSuggestions] = useState([
-    { name: 'Adobe Pvt Ltfd Company Demo', code: 'CIK123458973002345' },
-    { name: 'Adobe Pvt Ltfd Company Demo', code: 'CIK123458973002345' },
-    { name: 'Adobe Pvt Ltfd Company Demo', code: 'CIK123458973002345' },
-  ]);
-  const [searchText, setSearchText] = useState('');
-  const searchCompanies = useStore((state) => state.searchCompanies);
-  const updateSearchCompanies = useStore((state) => state.updateSearchCompanies);
-  const [getSearchCompanies, { loading, error, data }] = useLazyQuery(GET_SEARCH_COMPANY, {
-    variables: { search: searchText },
-    skip: !searchText,
-    fetchPolicy: 'cache-and-network',
-  });
-  const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (data) updateSearchCompanies(data.searchCompany);
-  }, [data]);
-
-  useEffect(() => {
-  }, [searchCompanies]);
-
-  useEffect(() => {
-    if (searchText.length > 2) {
-      getSearchCompanies(searchText);
-    }
-  }, [searchText]);
+  const handleSelect = useCallback(
+    ({ value }) => {
+      navigate(`/company/${value}`);
+    },
+    [navigate],
+  );
 
   return (
     <div className="body flex flex-col items-center align-middle overflow-y-visible fontClass text-wide">
@@ -54,40 +31,15 @@ const Landing = () => {
         </div>
         {/* Center align search bar */}
         <div className="flex flex-row justify-center space-x-4 -my-10 search-bar-div flex-start">
-          <div className="flex flex-row items-center search-logo pl-2">
-            <SearchIcon />{' '}
-            <input
-              className="w-2/4 rounded-lg bg-white p-2 text-lg text-center"
+          <div className="flex flex-row items-center search-logo ">
+            <CompanySearch
+              style={{ width: '100%' }}
               placeholder="Search by Company Name or CIK number"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              onFocus={() => setShowDropdown(true)}
-              onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+              value={[]}
+              onSelect={handleSelect}
             />
           </div>
-          <div>
-            <button
-              className="text-white rounded-lg p-4 ml-0"
-              style={{ backgroundColor: '#005249' }}
-            >
-              SEARCH
-            </button>
-          </div>
         </div>
-        {searchCompanies.length > 0 && showDropdown && (
-          <div className="suggestions space-y-4 p-2  bg-white rounded-lg">
-            {searchCompanies.map((suggestion, i) => {
-              return (
-                <Link to={`/company/${suggestion.name}`} key={i}>
-                  <div className="suggestion-row flex flex-row justify-between px-2">
-                    <div className="name">{suggestion.name}</div>
-                    <div className="code">CIK: {suggestion.cik}</div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        )}
       </div>
       <div className="solution flex py-60 flex-col">
         <div className="title text-center text-5xl font-bold">

@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Label, Tooltip } from 'recharts';
+import { preciseRoundOff } from '@utils/utils';
 
 const EmptyPieChart = ({ fullWidth, data, innerRadius, outerRadius }) => {
   return (
@@ -18,7 +19,7 @@ const EmptyPieChart = ({ fullWidth, data, innerRadius, outerRadius }) => {
         >
           <Cell key={`cell`} fill="#007B55" />
           <Label
-            value={`${data[0].value}%`}
+            value={`${preciseRoundOff(data[0].value)}%`}
             position="center"
             fill="#212B36"
             style={{

@@ -37,7 +37,6 @@ export const GET_COMPANY_ALL_DETAILS_BY_NAME = gql`
         arpa
         acv
         churnRate
-        accountDist
         filingDate {
           quarter
           year
