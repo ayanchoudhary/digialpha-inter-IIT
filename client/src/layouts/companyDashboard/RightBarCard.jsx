@@ -7,7 +7,7 @@ import useStore from './../../store';
 import { useState, useEffect } from 'react';
 import { getArrGraphData, getDelta } from './../../utils/utils';
 import { useMemo } from 'react';
-import { getCumulativeSum } from '@utils/utils';
+import { getCumulativeSum, preciseRoundOff } from '@utils/utils';
 import TinyLineChart from '@layouts/charts/TinyLineChart';
 
 const RightBarCard = () => {
@@ -65,7 +65,8 @@ const RightBarCard = () => {
           <div className="flex mt-6 items-center">
             {penetrationDelta > 0 ? <TrendUp /> : <TrendDown />}
             <p className="text-sm text-gray-500 ml-2 m-0">
-              <span className="font-bold text-gray-900">{penetrationDelta}%</span> than last year
+              <span className="font-bold text-gray-900">{preciseRoundOff(penetrationDelta)}%</span>{' '}
+              than last year
             </p>
           </div>
           <EmptyPieChart data={penetrationData} innerRadius={60} outerRadius={80} />
@@ -75,15 +76,18 @@ const RightBarCard = () => {
       <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
         <p className="font-bold text-sm">MRR Stats</p>
         <p className="text-xs text-gray-500">
-          ({rrDelta}% New | {churnRateDelta}% Churnned) than last year
+          ({preciseRoundOff(rrDelta)}% New | {preciseRoundOff(churnRateDelta)}% Churnned) <br />{' '}
+          than last year
         </p>
         <div className="width-250 flex flex-col items-center mt-4 h-52">
           <TinyLineChart
             fullWidth
             graphData={mrrAndChurnRateData}
             val="mrr"
-            labelFormatter={(a, b) => `${b[0]?.value} (${b[0]?.payload?.date || ''})`}
-            formatter={(a, b, c) => [`${c?.payload?.churnRate}%`, 'Churn Rate']}
+            labelFormatter={(a, b) =>
+              `${preciseRoundOff(b[0]?.value)} (${b[0]?.payload?.date || ''})`
+            }
+            formatter={(a, b, c) => [`${preciseRoundOff(c?.payload?.churnRate)}%`, 'Churn Rate']}
           />
         </div>
       </div>
@@ -102,8 +106,8 @@ const RightBarCard = () => {
             ]}
             label={`${ltvCacRatio * 100}%`}
             legendPayload={[
-              { value: `Total LTV: ${cumulativeLtv}`, color: '#007B55' },
-              { value: `Total CAC: ${cumulativeCac}`, color: '#B78103' },
+              { value: `Total LTV: ${preciseRoundOff(cumulativeLtv)}`, color: '#007B55' },
+              { value: `Total CAC: ${preciseRoundOff(cumulativeCac)}`, color: '#B78103' },
             ]}
           />
         </div>
