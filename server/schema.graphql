@@ -12,33 +12,32 @@ type Date {
 
 type Acquisition {
   leads: Float
-  accounts: Int
+  accounts: Float
   conversion: Float
-  salesCycle: Int
+  salesCycle: Float
   cac: Float
   filingDate: Date
 }
 
 type Engagement {
-  users: Int
+  users: Float
   penetration: Float
   nps: String
   filingDate: Date
 }
 
 type Revenue {
-  rr: Int
+  rr: Float
   growth: Float
   arpa: Float
-  acv: Int
+  acv: Float
   churnRate: Float
-  accountDist: Int
   filingDate: Date
 }
 
 type UnitEcon {
-  ltv: Int
-  payback: Int
+  ltv: Float
+  payback: Float
   ltvRatio: Float
   filingDate: Date
 }
