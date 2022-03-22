@@ -1,3 +1,5 @@
+import random
+
 class Acquistion:
     """
     A class to provide acquisition object
@@ -161,7 +163,7 @@ class SaaSGoals:
         self.filingDate = date
 
     def negativeSaasGoals(date=None):
-        return SaaSGoals(False, False, False, False,date)
+        return SaaSGoals(bool(random.choice([0, 1])), bool(random.choice([0, 1])), bool(random.choice([0, 1])), bool(random.choice([0, 1])), date)
 
 class Quarter:
     """
