@@ -346,6 +346,8 @@ if __name__ == "__main__":
     client = MongoClient('mongodb://admin:PASSWORD@20.102.85.148:27017/')
     db = client.da_new
 
+    db.companies.drop()
+
     ciks = {}
     f = open('ticker.txt')
     for line in f.readlines():
