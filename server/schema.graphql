@@ -11,7 +11,7 @@ type Date {
 }
 
 type Acquisition {
-  leads: Int
+  leads: Float
   accounts: Int
   conversion: Float
   salesCycle: Int
