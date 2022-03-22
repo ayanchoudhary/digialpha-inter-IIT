@@ -89,17 +89,16 @@ class Revenue:
         returns a zero data point indicating no data found
     """
 
-    def __init__(self, rr, growth, arpa, acv, churnRate, accountDist, date=None):
+    def __init__(self, rr, growth, arpa, acv, churnRate, date=None):
         self.rr = rr
         self.growth = growth
         self.arpa = arpa
         self.acv = acv
         self.churnRate = churnRate
-        self.accountDist = accountDist
         self.filingDate = date
 
     def zeroRevenue(date=None):
-        return Revenue(0,0,0,0,0,0,date)
+        return Revenue(0,0,0,0,0,date)
 
 class UnitEcon:
     """
