@@ -77,7 +77,6 @@ def download_company_paramas():
         'ARPA', 
         'ACV', 
         'Churn Rate', 
-        'Account Distribution', 
         'LTV', 
         'CAC Payback', 
         'LTV/CAC Ratio'

@@ -90,7 +90,6 @@ def get_company_details(company_id, filing_date):
             arpa=revenue["arpa"],
             acv=revenue["acv"],
             churnRate=revenue["churnRate"],
-            accountDist=revenue["accountDist"],
             date=current_filing_date_obj
         )
 
@@ -146,8 +145,7 @@ def get_company_csv_data(company_id):
             revenue_obj.growth, 
             revenue_obj.arpa, 
             revenue_obj.acv, 
-            revenue_obj.churnRate, 
-            revenue_obj.accountDist, 
+            revenue_obj.churnRate,  
             unitEcon_obj.ltv, 
             unitEcon_obj.payback, 
             unitEcon_obj.ltvRatio
