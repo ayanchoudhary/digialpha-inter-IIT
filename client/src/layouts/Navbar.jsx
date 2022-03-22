@@ -1,17 +1,25 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import "./../styles/Navbar.css"
+import React, { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import CompanySearch from '@layouts/companySearch/CompanySearch';
+
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleSelect = useCallback(
+    ({ value }) => {
+      navigate(`/company/${value}`);
+    },
+    [navigate],
+  );
+
   return (
-    <div className="Navbar flex flex-row justify-between p-10 items-center">
-      <div className="Searchbar flex flex-row items-center">
-        <input className="SearchText px-3.5" type="text" placeholder="Advance search, filters etc." />
-      </div>
-      <div className="Comparison">
-        <button className="CompareAnalytics">
-            Compare Analytics
-        </button>
-      </div>
+    <div className="navbar flex flex-row justify-between p-10 items-center">
+      <CompanySearch
+        style={{ width: 500 }}
+        placeholder="Search by Company Name or CIK number"
+        value={[]}
+        onSelect={handleSelect}
+      />
     </div>
   );
 };
