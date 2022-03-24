@@ -3,6 +3,8 @@ import { CURRENT_TIME } from '@layouts/companyDashboard/TimeFilter';
 
 const useStore = create((set) => ({
   company: {},
+  company1: {},
+  company2: {},
   showGlobalLoader: true,
   searchCompanies: [],
   timeFilter: {

@@ -124,7 +124,7 @@ const RightBarCard = () => {
               { name: 'LTV', value: cumulativeLtv },
               { name: 'Left', value: cumulativeLtv + cumulativeCac },
             ]}
-            label={`${ltvCacRatio * 100}%`}
+            label={`${(String(ltvCacRatio * 100).substring(0,5)-'0')}%`}
             legendPayload={[
               { value: `Total LTV: ${preciseRoundOff(cumulativeLtv)}`, color: '#007B55' },
               { value: `Total CAC: ${preciseRoundOff(cumulativeCac)}`, color: '#B78103' },
