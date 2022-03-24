@@ -35,10 +35,6 @@ const RightBarCard = () => {
       setpenetration(getArrGraphData(company.engagement, 'penetration', 'penetration'));
       setpenetrationDelta(getDelta(company.engagement, 'penetration'));
       setnps(getArrGraphData(company.engagement, 'nps', 'nps'));
-      // nps = last(nps)
-      // nps[0].value = 'nps'
-      // nps['value'] = 'nps'
-      console.log(nps);
     }
     if (company.revenue) {
       setrrDelta(getDelta(company.revenue, 'rr'));
@@ -49,12 +45,13 @@ const RightBarCard = () => {
   }, [company]);
 
   const penetrationData = useMemo(() => {
-    const sum = getCumulativeSum(penetration, 'penetration');
-    return [{ value: sum, label: 'Total Penetration' }, { value: 100 - sum }];
+    // const sum = getCumulativeSum(penetration, 'penetration');
+    const sum = String(last(penetration)['penetration']).substring(0,5) - '0';
+    return [{ value: sum, label: 'Total Penetration' }, { value: 100 - sum , label: 'Total MarketF'}];
   }, [penetration]);
 
   const npsValue = useMemo(() => {
-    const sum = last(nps)['nps']
+    const sum = last(nps)['nps']-'0';
     return [{ value: sum, label: 'NPS Score' }, { value: 10 - sum }];
   }, [nps]);
 

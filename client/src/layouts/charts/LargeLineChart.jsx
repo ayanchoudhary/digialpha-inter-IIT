@@ -11,6 +11,7 @@ import {
 import PropTypes from 'prop-types';
 
 const LargeLineChart = ({ data, val }) => {
+  // console.log(data)
   return (
     <ResponsiveContainer width="100%" height={400}>
       <LineChart
