@@ -2,6 +2,8 @@ import create from 'zustand';
 
 const useStore = create((set) => ({
   company: {},
+  company1: {},
+  company2: {},
   showGlobalLoader: true,
   searchCompanies: [],
   updateSearchCompanies: (searchCompanies) => set((state) => ({ searchCompanies })),

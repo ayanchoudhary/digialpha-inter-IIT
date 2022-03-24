@@ -42,6 +42,7 @@ const CompanySearch = (props) => {
       notFoundContent={fetching ? <Spin size="small" /> : null}
       {...props}
       mode="multiple"
+      className='py-2 px-6 text-base'
     >
       {options.map(({ name, cik }) => (
         <Option key={cik} value={name}>
