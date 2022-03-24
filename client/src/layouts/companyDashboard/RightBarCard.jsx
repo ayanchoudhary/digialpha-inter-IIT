@@ -46,12 +46,23 @@ const RightBarCard = () => {
 
   const penetrationData = useMemo(() => {
     // const sum = getCumulativeSum(penetration, 'penetration');
-    const sum = String(last(penetration)['penetration']).substring(0,5) - '0';
-    return [{ value: sum, label: 'Total Penetration' }, { value: 100 - sum , label: 'Total MarketF'}];
+    const sum = String(last(penetration)['penetration']).substring(0, 5) - '0';
+    return [
+      { value: sum, label: 'Total Penetration' },
+      { value: 100 - sum, label: 'Total MarketF' },
+    ];
   }, [penetration]);
 
   const npsValue = useMemo(() => {
-    const sum = last(nps)['nps']-'0';
+    let sum = last(nps)['nps'] - '0';
+    if (sum < 0) {
+      sum *= -1;
+    }
+    if (sum > 10) {
+      sum %= 10;
+    }
+    console.log(nps);
+    console.log(sum);
     return [{ value: sum, label: 'NPS Score' }, { value: 10 - sum }];
   }, [nps]);
 
@@ -69,11 +80,23 @@ const RightBarCard = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="nps flex flex-row items-center rounded-xl p-2" style={{ backgroundColor: '#005249'}}>
-        <div className='h-20'><EmptyPieChart height={80} width={80} data={npsValue} innerRadius={30} outerRadius={35} per={false}/></div>
+      <div
+        className="nps flex flex-row items-center rounded-xl p-2"
+        style={{ backgroundColor: '#005249' }}
+      >
+        <div className="h-20">
+          <EmptyPieChart
+            height={80}
+            width={80}
+            data={npsValue}
+            innerRadius={30}
+            outerRadius={35}
+            per={false}
+          />
+        </div>
         <div className="flex flex-col fontClass font-bold ml-2">
-          <div className='text-white text-2xl'>NPS Score</div>
-          <div className='text-gray-300 text-sm'>Customer Satisfaction</div>
+          <div className="text-white text-2xl">NPS Score</div>
+          <div className="text-gray-300 text-sm">Customer Satisfaction</div>
         </div>
         <div>
           <Person />
@@ -89,7 +112,7 @@ const RightBarCard = () => {
               than last year
             </p>
           </div>
-          <EmptyPieChart data={penetrationData} innerRadius={60} outerRadius={80} per={true}/>
+          <EmptyPieChart data={penetrationData} innerRadius={60} outerRadius={80} per={true} />
         </div>
       </div>
 
@@ -124,7 +147,7 @@ const RightBarCard = () => {
               { name: 'LTV', value: cumulativeLtv },
               { name: 'Left', value: cumulativeLtv + cumulativeCac },
             ]}
-            label={`${(String(ltvCacRatio * 100).substring(0,5)-'0')}%`}
+            label={`${String(ltvCacRatio * 100).substring(0, 5) - '0'}%`}
             legendPayload={[
               { value: `Total LTV: ${preciseRoundOff(cumulativeLtv)}`, color: '#007B55' },
               { value: `Total CAC: ${preciseRoundOff(cumulativeCac)}`, color: '#B78103' },

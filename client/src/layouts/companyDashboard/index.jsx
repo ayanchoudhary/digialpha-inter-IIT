@@ -159,7 +159,7 @@ const CompanyDashboard = () => {
       setleads(getArrGraphData(company.acquisition, 'leads', 'leads'));
       setsalesCycleDelta(getDelta(company.acquisition, 'salesCycle'));
       setsalesCycle(getArrGraphData(company.acquisition, 'salesCycle', 'salesCycle'));
-      setcacDelta(getDelta(company.acquisition, 'ca,startDatec'));
+      setcacDelta(getDelta(company.acquisition, 'cac'));
       setcac(getArrGraphData(company.acquisition, 'cac', 'cac'));
       setaccountsDelta(getDelta(company.acquisition, 'accounts'));
       setaccounts(getArrGraphData(company.acquisition, 'accounts', 'accounts'));
