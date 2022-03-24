@@ -1,17 +1,36 @@
 import create from 'zustand';
+import { CURRENT_TIME } from '@layouts/companyDashboard/TimeFilter';
 
 const useStore = create((set) => ({
   company: {},
   showGlobalLoader: true,
   searchCompanies: [],
-  updateSearchCompanies: (searchCompanies) => set((state) => ({ searchCompanies })),
+  timeFilter: {
+    startDate: 'Q1-2017',
+    endDate: `${CURRENT_TIME.qtr}-${CURRENT_TIME.year}`,
+  },
+  updateSearchCompanies: (searchCompanies) => set(() => ({ searchCompanies })),
   updateCompany: (company) =>
-    set((state) => ({
+    set(() => ({
       company,
     })),
   updateShowGlobalLoader: (showGlobalLoader) =>
-    set((state) => ({
+    set(() => ({
       showGlobalLoader,
+    })),
+  updateStartDate: (startDate) =>
+    set((state) => ({
+      timeFilter: {
+        startDate,
+        endDate: state.timeFilter.endDate,
+      },
+    })),
+  updateEndDate: (endDate) =>
+    set((state) => ({
+      timeFilter: {
+        startDate: state.timeFilter.startDate,
+        endDate,
+      },
     })),
 }));
 
