@@ -24,6 +24,8 @@ const CompanyDashboard = () => {
   const { companyName } = useParams();
   const company = useStore((state) => state.company);
   const showGlobalLoader = useStore((state) => state.showGlobalLoader);
+  const [startDate, setStartDate] = useState(0);
+  const [endDate, setEndDate] = useState(0);
   const [leadsDelta, setleadsDelta] = useState(0);
   const [leads, setleads] = useState([0]);
   const [arpaDelta, setarpaDelta] = useState(0);
@@ -151,6 +153,7 @@ const CompanyDashboard = () => {
   );
 
   useEffect(() => {
+    console.log(company.startDate)
     if (company.acquisition) {
       setleadsDelta(getDelta(company.acquisition, 'leads'));
       setleads(getArrGraphData(company.acquisition, 'leads', 'leads'));

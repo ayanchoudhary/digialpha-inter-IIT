@@ -9,6 +9,8 @@ import { getArrGraphData, getDelta } from './../../utils/utils';
 import { useMemo } from 'react';
 import { getCumulativeSum, preciseRoundOff } from '@utils/utils';
 import TinyLineChart from '@layouts/charts/TinyLineChart';
+import { Person } from './../../assets/icons';
+import { last } from 'lodash';
 
 const RightBarCard = () => {
   const company = useStore((state) => state.company);
@@ -20,6 +22,7 @@ const RightBarCard = () => {
   const [churnRate, setchurnRate] = useState([0]);
   const [cac, setcac] = useState([0]);
   const [ltv, setltv] = useState([0]);
+  let [nps, setnps] = useState([0]);
 
   useEffect(() => {
     if (company.acquisition) {
@@ -31,6 +34,7 @@ const RightBarCard = () => {
     if (company.engagement) {
       setpenetration(getArrGraphData(company.engagement, 'penetration', 'penetration'));
       setpenetrationDelta(getDelta(company.engagement, 'penetration'));
+      setnps(getArrGraphData(company.engagement, 'nps', 'nps'));
     }
     if (company.revenue) {
       setrrDelta(getDelta(company.revenue, 'rr'));
@@ -41,9 +45,26 @@ const RightBarCard = () => {
   }, [company]);
 
   const penetrationData = useMemo(() => {
-    const sum = getCumulativeSum(penetration, 'penetration');
-    return [{ value: sum, label: 'Total Penetration' }, { value: 100 - sum }];
+    // const sum = getCumulativeSum(penetration, 'penetration');
+    const sum = String(last(penetration)['penetration']).substring(0, 5) - '0';
+    return [
+      { value: sum, label: 'Total Penetration' },
+      { value: 100 - sum, label: 'Total MarketF' },
+    ];
   }, [penetration]);
+
+  const npsValue = useMemo(() => {
+    let sum = last(nps)['nps'] - '0';
+    if (sum < 0) {
+      sum *= -1;
+    }
+    if (sum > 10) {
+      sum %= 10;
+    }
+    console.log(nps);
+    console.log(sum);
+    return [{ value: sum, label: 'NPS Score' }, { value: 10 - sum }];
+  }, [nps]);
 
   const mrrAndChurnRateData = useMemo(
     () => rr.map((a, i) => ({ ...a, churnRate: churnRate[i]?.churnRate })),
@@ -59,6 +80,28 @@ const RightBarCard = () => {
 
   return (
     <div className="flex flex-col">
+      <div
+        className="nps flex flex-row items-center rounded-xl p-2"
+        style={{ backgroundColor: '#005249' }}
+      >
+        <div className="h-20">
+          <EmptyPieChart
+            height={80}
+            width={80}
+            data={npsValue}
+            innerRadius={30}
+            outerRadius={35}
+            per={false}
+          />
+        </div>
+        <div className="flex flex-col fontClass font-bold ml-2">
+          <div className="text-white text-2xl">NPS Score</div>
+          <div className="text-gray-300 text-sm">Customer Satisfaction</div>
+        </div>
+        <div>
+          <Person />
+        </div>
+      </div>
       <div className="p-6 my-6 rounded-md soft-box-shadow flex flex-col justify-between soft-box-shadow">
         <p className="font-bold text-sm">Market Penetration</p>
         <div className="width-250 flex flex-col items-center">
@@ -69,7 +112,7 @@ const RightBarCard = () => {
               than last year
             </p>
           </div>
-          <EmptyPieChart data={penetrationData} innerRadius={60} outerRadius={80} />
+          <EmptyPieChart data={penetrationData} innerRadius={60} outerRadius={80} per={true} />
         </div>
       </div>
 
@@ -104,7 +147,7 @@ const RightBarCard = () => {
               { name: 'LTV', value: cumulativeLtv },
               { name: 'Left', value: cumulativeLtv + cumulativeCac },
             ]}
-            label={`${ltvCacRatio * 100}%`}
+            label={`${String(ltvCacRatio * 100).substring(0, 5) - '0'}%`}
             legendPayload={[
               { value: `Total LTV: ${preciseRoundOff(cumulativeLtv)}`, color: '#007B55' },
               { value: `Total CAC: ${preciseRoundOff(cumulativeCac)}`, color: '#B78103' },

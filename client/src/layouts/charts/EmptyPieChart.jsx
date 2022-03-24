@@ -3,9 +3,16 @@ import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Label, Tooltip } from 'recharts';
 import { preciseRoundOff } from '@utils/utils';
 
-const EmptyPieChart = ({ fullWidth, data, innerRadius, outerRadius }) => {
+const EmptyPieChart = ({ width, height, data, innerRadius, outerRadius, per }) => {
+  let val;
+  if (per) {
+    val = '%';
+  } else {
+    val = '/10';
+  }
+  
   return (
-    <ResponsiveContainer width={fullWidth ? '100%' : 200} height={fullWidth ? '100%' : 200}>
+    <ResponsiveContainer width={width || 200} height={height || 200}>
       <PieChart width={300} height={300}>
         <Pie
           data={data}
@@ -15,15 +22,17 @@ const EmptyPieChart = ({ fullWidth, data, innerRadius, outerRadius }) => {
           innerRadius={innerRadius}
           outerRadius={outerRadius}
           cornerRadius={50}
-          fill="#f4f4f4"
+          fill="#000000"
+          opacity={0.15}
         >
-          <Cell key={`cell`} fill="#007B55" />
+          <Cell key={`cell`} fill="#007B55" opacity={1}/>
           <Label
-            value={`${preciseRoundOff(data[0].value)}%`}
+            // value={`${preciseRoundOff(data[0].value)}%`}
+            value={`${data[0].value}${val}`}
             position="center"
-            fill="#212B36"
+            fill={per? '#212B36' : '#FFF'}
             style={{
-              fontSize: '30px',
+              fontSize: '24px',
               fontWeight: 'bold',
             }}
           />

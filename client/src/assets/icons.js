@@ -72,3 +72,26 @@ export const UnderlineG = () => (
     <rect y="0.388184" width="120" height="5" rx="2.5" fill="#007B55" />
   </svg>
 );
+
+export const Person = () => (
+  <svg width="60" height="75" viewBox="0 0 66 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M51.6663 18.6667C51.6663 28.976 43.309 37.3333 32.9997 37.3333C22.6904 37.3333 14.333 28.976 14.333 18.6667C14.333 8.35735 22.6904 0 32.9997 0C43.309 0 51.6663 8.35735 51.6663 18.6667ZM65.6664 79.3333C65.6664 81.9107 63.577 84 60.9997 84H4.99968C2.42235 84 0.333008 81.9107 0.333008 79.3333C0.333008 61.292 14.9584 46.6667 32.9997 46.6667C51.041 46.6667 65.6664 61.292 65.6664 79.3333Z"
+      fill="white"
+      opacity="0.2"
+    />
+  </svg>
+);
+
+export const Close = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M14.6666 1.33325L1.33325 14.6666M14.6666 14.6666L1.33325 1.33325L14.6666 14.6666Z"
+      stroke="#919EAB"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
+  </svg>
+);
