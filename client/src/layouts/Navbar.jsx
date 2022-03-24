@@ -41,9 +41,6 @@ const Navbar = () => {
     setCompany2(value);
   }, []);
 
-  console.log(company1);
-  console.log(company2);
-
   const compare = useCallback(() => {
     navigate(`/comparison/${company1}/${company2}`);
   }, [navigate]);
