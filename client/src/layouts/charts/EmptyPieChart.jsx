@@ -8,14 +8,14 @@ const EmptyPieChart = ({ width, height, data, innerRadius, outerRadius, per }) =
   if (per) {
     val = '%';
   } else {
-    val = '/10';
+    val = '';
   }
 
   return (
     <ResponsiveContainer width={width || 200} height={height || 200}>
       <PieChart width={300} height={300}>
         <Pie
-          data={data}
+          data={Math.abs(data)}
           cx="50%"
           cy="50%"
           dataKey="value"

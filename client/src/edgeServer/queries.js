@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const GET_COMPANY_ALL_DETAILS_BY_NAME = gql`
-  query company($name: String!, $startDate: String!, $endDate: String!) {
+  query company($name: String!, $startDate: String, $endDate: String) {
     company(name: $name, startDate: $startDate, endDate: $endDate) {
       id
       name
