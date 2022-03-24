@@ -10,7 +10,7 @@ const EmptyPieChart = ({ width, height, data, innerRadius, outerRadius, per }) =
   } else {
     val = '/10';
   }
-  
+
   return (
     <ResponsiveContainer width={width || 200} height={height || 200}>
       <PieChart width={300} height={300}>
@@ -25,14 +25,14 @@ const EmptyPieChart = ({ width, height, data, innerRadius, outerRadius, per }) =
           fill="#000000"
           opacity={0.15}
         >
-          <Cell key={`cell`} fill="#007B55" opacity={1}/>
+          <Cell key={`cell`} fill="#007B55" opacity={1} />
           <Label
             // value={`${preciseRoundOff(data[0].value)}%`}
             value={`${data[0].value}${val}`}
             position="center"
-            fill={per? '#212B36' : '#FFF'}
+            fill={per ? '#212B36' : '#FFF'}
             style={{
-              fontSize: '24px',
+              fontSize: '18px',
               fontWeight: 'bold',
             }}
           />
