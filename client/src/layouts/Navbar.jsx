@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import CompanySearch from '@layouts/companySearch/CompanySearch';
 import { Modal, Button } from 'antd';
 import { Close } from './../assets/icons';
+import useStore from '../store';
 
 const Navbar = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const company = useStore((state) => state.company);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -28,10 +30,23 @@ const Navbar = () => {
     [navigate],
   );
 
-  const [company1, setCompany1] = useState('');
-  const [company2, setCompany2] = useState('');
+  const [company1, setCompany1] = useState({});
+  const [company2, setCompany2] = useState({});
 
-  // console.log(company1);
+  const handleComparison1 = useCallback(({ value }) => {
+    setCompany1(value);
+  }, []);
+
+  const handleComparison2 = useCallback(({ value }) => {
+    setCompany2(value);
+  }, []);
+
+  console.log(company1);
+  console.log(company2);
+
+  const compare = useCallback(() => {
+    navigate(`/comparison/${company1}/${company2}`);
+  }, [navigate]);
 
   return (
     <div className="navbar flex flex-row justify-between p-10 items-center">
@@ -66,8 +81,10 @@ const Navbar = () => {
             <CompanySearch
               style={{ width: 500 }}
               placeholder="Search by Company Name or CIK number"
-              value={[]}
-              // onSelect={handleSelect}
+              value={company1}
+              // defaultValue={{name: company?.name, cik: company?.cik}}
+              onSelect={handleComparison1}
+              mode={null}
             />
           </div>
           <div>
@@ -75,7 +92,9 @@ const Navbar = () => {
             <CompanySearch
               style={{ width: 500 }}
               placeholder="Search by Company Name or CIK number"
-              value={[]}
+              value={company2}
+              onSelect={handleComparison2}
+              mode={null}
               // onSelect={handleComparison}
               // onSelect={handleSelect}
             />
@@ -83,7 +102,7 @@ const Navbar = () => {
 
           <div className="flex flex-row-reverse">
             <button
-              onClick={showModal}
+              onClick={compare}
               className="flex items-center py-2 px-6 text-blue-700 text-base fontClass font-bold compare-button"
             >
               Compare Analytics
