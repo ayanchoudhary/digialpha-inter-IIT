@@ -42,20 +42,34 @@ const CompanySearch = (props) => {
       notFoundContent={fetching ? <Spin size="small" /> : null}
       {...props}
       mode="multiple"
-      className='py-2 px-6 text-base'
+      className="py-2 px-6 text-base"
+      menuItemSelectedIcon={<></>}
     >
-      {options.map(({ name, cik }) => (
-        <Option key={cik} value={name}>
-          <Link to={`/company/${name}`}>
-            <div className="flex justify-between">
-              <span className="text-gray-900">{name}</span>
-              <span className="text-gray-400">CIK: {cik}</span>
-            </div>
-          </Link>
-        </Option>
-      ))}
+      {props.disableRedirect ? getSimpleOptions(options) : getLinkOptions(options)}
     </Select>
   );
 };
+
+const getLinkOptions = (options) =>
+  options.map(({ name, cik }) => (
+    <Option key={cik} value={name}>
+      <Link to={`/company/${name}`}>
+        <div className="flex justify-between">
+          <span className="text-gray-900">{name}</span>
+          <span className="text-gray-400">CIK: {cik}</span>
+        </div>
+      </Link>
+    </Option>
+  ));
+
+const getSimpleOptions = (options) =>
+  options.map(({ name, cik }) => (
+    <Option key={cik} value={name}>
+      <div className="flex justify-between">
+        <span className="text-gray-900">{name}</span>
+        <span className="text-gray-400">CIK: {cik}</span>
+      </div>
+    </Option>
+  ));
 
 export default CompanySearch;
