@@ -1,5 +1,5 @@
 <h1 align="center">HP_DA_T8 </h1>
-<p align="center"><b>A Web Portal to analyse the company's data for various features. </b></p>
+<p align="center"><b>A Web Portal to analyse and visualise filing data of companies using various metrics. </b></p>
 
 ## Overview
 
