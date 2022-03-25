@@ -49,6 +49,7 @@ const Navbar = () => {
   }, []);
 
   const compare = useCallback(() => {
+    setIsModalVisible(false);
     navigate(`/comparison/${company1}/${company2}`);
   }, [company1, company2, navigate]);
 

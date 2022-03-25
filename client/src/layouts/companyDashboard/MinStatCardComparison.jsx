@@ -7,8 +7,6 @@ import { CHART_TYPES } from '@constants/variations';
 import TinyLineComparison from '../charts/TinyLineComparison';
 
 const MinStatCardComparison = ({ label, color1, color2, graphData1, graphData2, val }) => {
-  // const isDeltaPositive = delta > 0;
-  // const chartColor = isDeltaPositive ? '#00BFA6' : '#FF5252';
   return (
     <div className="p-6 mr-4 my-6 rounded-md soft-box-shadow flex miniStatCard justify-between flex-shrink-0 bg-white">
       <div>
