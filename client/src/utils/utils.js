@@ -32,8 +32,8 @@ export const getCumulativeSum = (arr, key, kFormat = true) => {
 
 export const kFormatter = (num) =>
   Math.abs(num) > 999
-    ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + 'k'
-    : Math.sign(num) * Math.abs(num);
+    ? Math.sign(num) * (Math.abs(num) / 1000).toFixed(1) + 'M'
+    : Math.sign(num) * Math.abs(num).toFixed(2) + 'k';
 
 export const truncateDatapoints = (arr, key, maxLength = 5) => {
   if (arr.length <= maxLength) return arr;
