@@ -54,7 +54,7 @@ const RightBarCard = () => {
 
   const npsValue = useMemo(() => {
     let sum = last(nps)['nps'] - '0';
-    return [{ value: sum, label: 'NPS Score' }, { value: 10 - sum }];
+    return [{ value: sum, label: 'NPS Score' }, { value: 100 - Math.abs(sum) }];
   }, [nps]);
 
   const mrrAndChurnRateData = useMemo(
