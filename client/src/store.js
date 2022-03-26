@@ -16,6 +16,14 @@ const useStore = create((set) => ({
     set(() => ({
       company,
     })),
+  updateCompany1: (company1) =>
+    set(() => ({
+      company1,
+    })),
+  updateCompany2: (company2) =>
+    set(() => ({
+      company2,
+    })),
   updateShowGlobalLoader: (showGlobalLoader) =>
     set(() => ({
       showGlobalLoader,

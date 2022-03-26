@@ -45,25 +45,16 @@ const RightBarCard = () => {
   }, [company]);
 
   const penetrationData = useMemo(() => {
-    // const sum = getCumulativeSum(penetration, 'penetration');
     const sum = String(last(penetration)['penetration']).substring(0, 5) - '0';
     return [
       { value: sum, label: 'Total Penetration' },
-      { value: 100 - sum, label: 'Total MarketF' },
+      { value: 100 - sum, label: 'Total Market' },
     ];
   }, [penetration]);
 
   const npsValue = useMemo(() => {
     let sum = last(nps)['nps'] - '0';
-    if (sum < 0) {
-      sum *= -1;
-    }
-    if (sum > 10) {
-      sum %= 10;
-    }
-    console.log(nps);
-    console.log(sum);
-    return [{ value: sum, label: 'NPS Score' }, { value: 10 - sum }];
+    return [{ value: sum, label: 'NPS Score' }, { value: 100 - Math.abs(sum) }];
   }, [nps]);
 
   const mrrAndChurnRateData = useMemo(

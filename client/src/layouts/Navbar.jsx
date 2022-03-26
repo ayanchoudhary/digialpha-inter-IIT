@@ -1,8 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CompanySearch from '@layouts/companySearch/CompanySearch';
-import { Modal, Button } from 'antd';
-import { Close } from './../assets/icons';
+import { Modal } from 'antd';
 import useStore from '../store';
 
 const Navbar = () => {
@@ -11,10 +10,6 @@ const Navbar = () => {
 
   const showModal = () => {
     setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
   };
 
   const handleCancel = () => {
@@ -30,23 +25,33 @@ const Navbar = () => {
     [navigate],
   );
 
-  const [company1, setCompany1] = useState({});
-  const [company2, setCompany2] = useState({});
+  const [company1, setCompany1] = useState(company?.name);
+  const [company2, setCompany2] = useState([]);
+
+  useEffect(() => {
+    if (!company1) setCompany1(company?.name);
+  }, [company?.name, company1]);
 
   const handleComparison1 = useCallback(({ value }) => {
     setCompany1(value);
+  }, []);
+
+  const clearCompany1 = useCallback(() => {
+    setCompany1([]);
   }, []);
 
   const handleComparison2 = useCallback(({ value }) => {
     setCompany2(value);
   }, []);
 
-  console.log(company1);
-  console.log(company2);
+  const clearCompany2 = useCallback(() => {
+    setCompany2([]);
+  }, []);
 
   const compare = useCallback(() => {
+    setIsModalVisible(false);
     navigate(`/comparison/${company1}/${company2}`);
-  }, [navigate]);
+  }, [company1, company2, navigate]);
 
   return (
     <div className="navbar flex flex-row justify-between p-10 items-center">
@@ -64,12 +69,9 @@ const Navbar = () => {
       </button>
       <Modal
         visible={isModalVisible}
-        // onOk={handleOk}
-        // onCancel={handleCancel}
+        onCancel={handleCancel}
         className="p-40 flex items-center shadow-md rounded-xl"
         footer={null}
-        // padding={300}
-        // width={800}
       >
         <div className="p-2 space-y-4">
           <div className="topbar font-bold fontClass text-xl">Compare Analytics</div>
@@ -77,26 +79,33 @@ const Navbar = () => {
             Compare metrices of two companies to get better information of the market space.
           </div>
           <div>
-            <div className="font-normal text-base text-gray-500">Select the first company:</div>
+            <div className="font-normal text-base text-gray-500 mb-2">
+              Select the first company:
+            </div>
             <CompanySearch
               style={{ width: 500 }}
               placeholder="Search by Company Name or CIK number"
               value={company1}
-              // defaultValue={{name: company?.name, cik: company?.cik}}
               onSelect={handleComparison1}
-              mode={null}
+              tagRender={tagRender}
+              disableRedirect
+              allowClear
+              onClear={clearCompany1}
             />
           </div>
           <div>
-            <div className="font-normal text-base  text-gray-500">Select the second company:</div>
+            <div className="font-normal text-base  text-gray-500 mb-2">
+              Select the second company:
+            </div>
             <CompanySearch
               style={{ width: 500 }}
               placeholder="Search by Company Name or CIK number"
               value={company2}
               onSelect={handleComparison2}
-              mode={null}
-              // onSelect={handleComparison}
-              // onSelect={handleSelect}
+              tagRender={tagRender}
+              disableRedirect
+              allowClear
+              onClear={clearCompany2}
             />
           </div>
 
@@ -113,5 +122,7 @@ const Navbar = () => {
     </div>
   );
 };
+
+const tagRender = (tag) => <p className="my-0 mx-2 font-semibold">{tag?.value}</p>;
 
 export default Navbar;

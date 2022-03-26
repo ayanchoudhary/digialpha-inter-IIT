@@ -26,7 +26,8 @@ export const useGetCompanyDetailsByName = async (companyName) => {
 };
 
 export const useGetComparisonDetails = async (companyName1, companyName2) => {
-  const updateCompany = useStore((state) => state.updateCompany);
+  const updateCompany1 = useStore((state) => state.updateCompany1);
+  const updateCompany2 = useStore((state) => state.updateCompany2);
   const updateShowGlobalLoader = useStore((state) => state.updateShowGlobalLoader);
 
   useEffect(() => {
@@ -38,8 +39,7 @@ export const useGetComparisonDetails = async (companyName1, companyName2) => {
     skip: !companyName1,
     fetchPolicy: 'cache-first',
     onCompleted: (data) => {
-      updateCompany(data.company1);
-      updateShowGlobalLoader(false);
+      updateCompany1(data.company);
     },
   });
 
@@ -48,10 +48,10 @@ export const useGetComparisonDetails = async (companyName1, companyName2) => {
     skip: !companyName2,
     fetchPolicy: 'cache-first',
     onCompleted: (data) => {
-      updateCompany(data.company2);
+      updateCompany2(data.company);
       updateShowGlobalLoader(false);
     },
   });
 
-  return (response1 + response2);
+  return (response1, response2);
 }

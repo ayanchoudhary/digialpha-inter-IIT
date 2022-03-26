@@ -1,34 +1,31 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
-import { LineChart, Line, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
+import React, { useMemo } from 'react';
+import { LineChart, Line, ResponsiveContainer, Tooltip, XAxis, Legend } from 'recharts';
+import combineDatasets from '../../services/combineComparisonChartData';
 
 const TinyLineComparison = ({
   color1,
   color2,
-  fullWidth,
   data1,
   data2,
-  val1,
-  val2,
+  val,
+  tooltipFormatter,
+  legendPayload,
 }) => {
-  let data = [];
-  for (let i = 0; i < data1.length; i++) {
-    let obj = {};
-    obj['name'] = i;
-    obj[`${val1}`] = data1[i][`${val1}`];
-    obj[`${val2}`] = data2[i][`${val2}`];
-    data.push(obj);
-  }
+  const combinedDataset = useMemo(() => combineDatasets(data1, data2, val), [data1, data2, val]);
+
   return (
-    <ResponsiveContainer width={fullWidth ? '100%' : 120} height="100%">
-      <LineChart width={120} height={120} data={data}>
-        <Tooltip />
-        <Line type="monotone" dataKey={val1} stroke={color1} strokeWidth={2} dot={false} />
-        <Line type="monotone" dataKey={val2} stroke={color2} strokeWidth={2} dot={false} />
+    <ResponsiveContainer width={300} height={300}>
+      <LineChart width={300} height={300} data={combinedDataset}>
+        <Tooltip formatter={tooltipFormatter} />
+        <Legend payload={legendPayload} />
+        <Line type="monotone" dataKey="value1" stroke={color1} strokeWidth={2} dot={false} />
+        <Line type="monotone" dataKey="value2" stroke={color2} strokeWidth={2} dot={false} />
         <XAxis dataKey="date" hide />
       </LineChart>
     </ResponsiveContainer>
   );
+  // return <></>;
 };
 
 export default TinyLineComparison;
