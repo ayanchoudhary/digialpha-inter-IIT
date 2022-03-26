@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import useCompanyDetailsMapper from '@services/useCompanyDetailsMapper';
 import { useParams } from 'react-router-dom';
 import { useGetComparisonDetails } from '../../edgeServer/getCompanyDetails';
@@ -7,6 +7,10 @@ import Navbar from '../Navbar';
 import MinStatCardComparison from '../companyDashboard/MinStatCardComparison';
 import { COMPANY_COLORS } from '@constants/variations';
 import { preciseRoundOff, kFormatter } from '@utils/utils';
+import { getArrGraphData, getDelta } from './../../utils/utils';
+import last from 'lodash';
+import DataCard from './DataComp';
+import TickerCardComp from './TickerComp';
 
 const Comparison = () => {
   const { companyName1, companyName2 } = useParams();
@@ -108,6 +112,86 @@ const Comparison = () => {
       company2Data.users,
     ],
   );
+  const [penetration1, setpenetration1] = useState([0]);
+  let [nps1, setnps1] = useState([0]);
+  const [penetration2, setpenetration2] = useState([0]);
+  let [nps2, setnps2] = useState([0]);
+
+  useEffect(() => {
+    if (company1.engagement) {
+      setpenetration1(getArrGraphData(company1.engagement, 'penetration', 'penetration'));
+      setnps1(getArrGraphData(company1.engagement, 'nps', 'nps'));
+    }
+    if (company2.engagement) {
+      setpenetration2(getArrGraphData(company2.engagement, 'penetration', 'penetration'));
+      setnps2(getArrGraphData(company2.engagement, 'nps', 'nps'));
+    }
+  }, [company1, company2]);
+  // console.log(penetration1);
+  // console.log((penetration1[penetration1.length -1]['penetration']));
+
+  const penetrationData1 = useMemo(() => {
+    return String(penetration1[penetration1.length - 1]['penetration']).substring(0, 5);
+  }, [penetration1]);
+
+  // console.log(penetrationData1);
+  const npsValue1 = useMemo(() => {
+    return nps1[nps1.length - 1]['nps'] - '0';
+  }, [nps1]);
+
+  const penetrationData2 = useMemo(() => {
+    return String(penetration2[penetration2.length - 1]['penetration']).substring(0, 5);
+  }, [penetration2]);
+
+  // console.log(penetrationData1);
+  const npsValue2 = useMemo(() => {
+    return nps2[nps2.length - 1]['nps'] - '0';
+  }, [nps2]);
+
+  const { saasGoals1 } = useStore((state) => state.company1);
+  const { sentiment1 } = useStore((state) => state.company1);
+  const lastSaasGoalStatus1 = last(saasGoals1);
+  const lastSentiment1 = last(sentiment1);
+
+  const { growth1, profitability1, maturity1, retention1 } = lastSaasGoalStatus1;
+
+  const { saasGoals2 } = useStore((state) => state.company2);
+  const { sentiment2 } = useStore((state) => state.company2);
+  const lastSaasGoalStatus2 = last(saasGoals2);
+  const lastSentiment2 = last(sentiment2);
+
+  const { growth2, profitability2, maturity2, retention2 } = lastSaasGoalStatus2;
+
+  const TickerCardData = useMemo(
+    () => [
+      {
+        label: 'Growth',
+        value1: growth1,
+        value2: growth2,
+      },
+      {
+        label: 'Profitabilty',
+        value1: profitability1,
+        value2: profitability2,
+      },
+      {
+        label: 'Maturity',
+        value1: maturity1,
+        value2: maturity2,
+      },
+      {
+        label: 'Retention',
+        value1: retention1,
+        value2: retention2,
+      },
+      {
+        label: 'Sentiment',
+        value1: sentiment1,
+        value2: sentiment2,
+      },
+    ],
+    [sentiment1, sentiment2, saasGoals1, saasGoals2],
+  );
 
   return (
     <>
@@ -117,6 +201,20 @@ const Comparison = () => {
           <h1 className="font-bold text-3xl text-gray-700">
             {companyName1} x {companyName2}
           </h1>
+        </div>
+        <div className='flex flex-column w-full justify-between'>
+          {TickerCardData.map((data) => (
+            <TickerCardComp
+              key={data.label}
+              label={data.label}
+              C1={companyName1}
+              C2={companyName2}
+              value1={data.value1}
+              value2={data.value2}
+              color1={COMPANY_COLORS.color1}
+              color2={COMPANY_COLORS.color2}
+            />
+          ))}
         </div>
         <div className="flex gap-4 justify-center w-full px-10 flex-wrap">
           {MinStatCardData.map((data) => (
@@ -148,6 +246,26 @@ const Comparison = () => {
               ]}
             />
           ))}
+        </div>
+        <div className="flex flex-row justify-center">
+          <DataCard
+            label="Market Penetration"
+            C1={companyName1}
+            C2={companyName2}
+            value1={penetrationData1}
+            value2={penetrationData2}
+            color1={COMPANY_COLORS.color1}
+            color2={COMPANY_COLORS.color2}
+          />
+          <DataCard
+            label="NPS Value"
+            C1={companyName1}
+            C2={companyName2}
+            value1={npsValue1}
+            value2={npsValue2}
+            color1={COMPANY_COLORS.color1}
+            color2={COMPANY_COLORS.color2}
+          />
         </div>
       </div>
     </>
