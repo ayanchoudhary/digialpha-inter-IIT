@@ -11,6 +11,7 @@ import { getArrGraphData, getDelta } from './../../utils/utils';
 import last from 'lodash';
 import DataCard from './DataComp';
 import TickerCardComp from './TickerComp';
+import TimeFilter from '../companyDashboard/TimeFilter';
 
 const Comparison = () => {
   const { companyName1, companyName2 } = useParams();
@@ -201,6 +202,7 @@ const Comparison = () => {
           <h1 className="font-bold text-3xl text-gray-700">
             {companyName1} x {companyName2}
           </h1>
+          <TimeFilter/>
         </div>
         <div className='flex flex-column w-full justify-between'>
           {TickerCardData.map((data) => (
