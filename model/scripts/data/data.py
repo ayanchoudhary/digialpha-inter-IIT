@@ -55,56 +55,61 @@ def add_data_points(db):
         if db.companies.find_one({ "name": each }):
                 db.companies.update_one({'name': each}, {'$set': {'filingStart': str(filing_date["_id"])}})
 
+        if len(container[each]) > len(filing_array):
+            continue
         for index, entry in enumerate(container[each]):
+            print(each)
             company = db.companies.find_one({ "name": each });
             if company:
-                db.acquisitions.insert_one({
-                    "leads": entry["qualified-leads"],
-                    "accounts": entry["Number_of_new_accounts"], 
-                    "conversion": entry["Percentage Conversion"],
-                    "salesCycle": entry["Sales Cycle"],
-                    "cac": entry["CAC"],
-                    "company_id": str(company["_id"]),
-                    "filingDate": str(filing_array[index]["_id"]) 
-                })
+                if not db.acquisitions.find_one({ "filingDate": str(filing_array[index]["_id"]) }):
+                    db.acquisitions.insert_one({
+                        "leads": entry["qualified-leads"],
+                        "accounts": entry["Number_of_new_accounts"], 
+                        "conversion": entry["Percentage Conversion"],
+                        "salesCycle": entry["Sales Cycle"],
+                        "cac": entry["CAC"],
+                        "company_id": str(company["_id"]),
+                        "filingDate": str(filing_array[index]["_id"]) 
+                    })
 
-                db.engagements.insert_one({
-                    "users": entry["AU"],
-                    "penetration": entry["Penetration rate"], 
-                    "nps": entry["Net Promoter Score"],
-                    "company_id": str(company["_id"]),
-                    "filingDate": str(filing_array[index]["_id"]) 
-                })
+                    db.engagements.insert_one({
+                        "users": entry["AU"],
+                        "penetration": entry["Penetration rate"], 
+                        "nps": entry["Net Promoter Score"],
+                        "company_id": str(company["_id"]),
+                        "filingDate": str(filing_array[index]["_id"]) 
+                    })
 
-                db.revenues.insert_one({
-                    "rr": entry["Revenue rate"],
-                    "growth": entry["Growth revenue rate"], 
-                    "arpa": entry["arpa"],
-                    "acv": entry["acv"],
-                    "churnRate": entry["churn rate"],
-                    "company_id": str(company["_id"]),
-                    "filingDate": str(filing_array[index]["_id"]) 
-                })
+                    db.revenues.insert_one({
+                        "rr": entry["Revenue rate"],
+                        "growth": entry["Growth revenue rate"], 
+                        "arpa": entry["arpa"],
+                        "acv": entry["acv"],
+                        "churnRate": entry["churn rate"],
+                        "company_id": str(company["_id"]),
+                        "filingDate": str(filing_array[index]["_id"]) 
+                    })
 
-                db.unit_econs.insert_one({
-                    "ltv": entry["ltv"],
-                    "payback": entry["CAC Payback"], 
-                    "ltvRatio": entry["LTV/CAC"],
-                    "company_id": str(company["_id"]),
-                    "filingDate": str(filing_array[index]["_id"]) 
-                })
+                    db.unit_econs.insert_one({
+                        "ltv": entry["ltv"],
+                        "payback": entry["CAC Payback"], 
+                        "ltvRatio": entry["LTV/CAC"],
+                        "company_id": str(company["_id"]),
+                        "filingDate": str(filing_array[index]["_id"]) 
+                    })
         
 
 
 
 if __name__ == "__main__":
     # Create a new connection object and initialize with the required database
-    client = MongoClient('mongodb://admin:PASSWORD@20.102.85.148:27017/')
+    client = MongoClient('mongodb://admin:th3_b3es7_p4ss_1_h4d@20.102.85.148:27017/')
     db = client.da_new
-    db.acquisitions.drop()
-    db.engagements.drop()
-    db.revenues.drop()
-    db.unit_econs.drop()
+
+    # db.acquisitions.drop()
+    # db.engagements.drop()
+    # db.revenues.drop()
+    # db.unit_econs.drop()
 
     add_data_points(db)
 
